@@ -376,6 +376,9 @@ function initModalForms() {
     // Автоформатирование телефонных номеров
     initPhoneFormatting();
     
+    // Управление кнопками submit через checkbox
+    initConsentCheckboxes();
+    
     // Валидация форм перед отправкой
     const clientForm = document.getElementById('clientForm');
     const masterForm = document.getElementById('masterForm');
@@ -386,6 +389,28 @@ function initModalForms() {
     
     if (masterForm) {
         masterForm.addEventListener('submit', validateForm);
+    }
+}
+
+// Управление активностью кнопок submit
+function initConsentCheckboxes() {
+    const clientConsent = document.getElementById('clientConsent');
+    const clientSubmitBtn = document.getElementById('clientSubmitBtn');
+    const masterConsent = document.getElementById('masterConsent');
+    const masterSubmitBtn = document.getElementById('masterSubmitBtn');
+    
+    // Обработчик для формы клиента
+    if (clientConsent && clientSubmitBtn) {
+        clientConsent.addEventListener('change', function() {
+            clientSubmitBtn.disabled = !this.checked;
+        });
+    }
+    
+    // Обработчик для формы мастера
+    if (masterConsent && masterSubmitBtn) {
+        masterConsent.addEventListener('change', function() {
+            masterSubmitBtn.disabled = !this.checked;
+        });
     }
 }
 

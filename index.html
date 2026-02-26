@@ -527,6 +527,9 @@
       <span data-ru="© 2026 Мастера Тбилиси • Сервис поиска мастеров • Email:" data-ka="© 2026 ოსტატები თბილისში • ოსტატების ძიების სერვისი • ელფოსტა:">© 2026 Мастера Тбилиси • Сервис поиска мастеров • Email:</span>
       <a href="mailto:mastera.handyman@gmail.com" class="footer-link">mastera.handyman@gmail.com</a>
     </p>
+    <p class="footer-privacy">
+      <span data-ru="Отправляя форму, вы соглашаетесь на обработку персональных данных в соответствии с законодательством Грузии." data-ka="ფორმის გაგზავნით თქვენ ეთანხმებით პერსონალურ მონაცემთა დამუშავებას საქართველოს კანონმდებლობის შესაბამისად.">Отправляя форму, вы соглашаетесь на обработку персональных данных в соответствии с законодательством Грузии.</span>
+    </p>
   </footer>
   
   <!-- Кнопка "Вверх" -->
@@ -560,7 +563,13 @@
         <input type="text" name="address" placeholder="Адрес / მისამართი" data-ru-placeholder="Адрес" data-ka-placeholder="მისამართი" required minlength="5">
         <input type="hidden" name="_subject" value="Новая заявка от клиента - Тбилиси">
         <input type="hidden" name="_language" value="ru">
-        <button type="submit" class="submit-btn" data-ru="Отправить заявку" data-ka="განაცხადის გაგზავნა">Отправить заявку</button>
+        <div class="consent-wrapper">
+          <label class="consent-label">
+            <span class="consent-text" data-ru="Согласен на обработку персональных данных" data-ka="ვეთანხმები პერსონალური მონაცემების დამუშავებას">Согласен на обработку персональных данных</span>
+            <input type="checkbox" name="consent" id="clientConsent" class="consent-checkbox" checked>
+          </label>
+        </div>
+        <button type="submit" class="submit-btn" id="clientSubmitBtn" data-ru="Отправить заявку" data-ka="განაცხადის გაგზავნა">Отправить заявку</button>
       </form>
     </div>
   </div>
@@ -589,7 +598,13 @@
         <textarea name="about" rows="3" placeholder="О себе / თქვენს შესახებ" data-ru-placeholder="О себе" data-ka-placeholder="თქვენს შესახებ" required minlength="20"></textarea>
         <input type="hidden" name="_subject" value="Новая регистрация мастера - Тбилиси">
         <input type="hidden" name="_language" value="ru">
-        <button type="submit" class="submit-btn" data-ru="Зарегистрироваться" data-ka="რეგისტრაცია">Зарегистрироваться</button>
+        <div class="consent-wrapper">
+          <label class="consent-label">
+            <span class="consent-text" data-ru="Согласен на обработку персональных данных" data-ka="ვეთანხმები პერსონალური მონაცემების დამუშავებას">Согласен на обработку персональных данных</span>
+            <input type="checkbox" name="consent" id="masterConsent" class="consent-checkbox" checked>
+          </label>
+        </div>
+        <button type="submit" class="submit-btn" id="masterSubmitBtn" data-ru="Зарегистрироваться" data-ka="რეგისტრაცია">Зарегистрироваться</button>
       </form>
     </div>
   </div>
