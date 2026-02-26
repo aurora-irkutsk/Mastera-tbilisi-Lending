@@ -330,6 +330,22 @@ function setLanguage(lang) {
         titleElement.textContent = titleElement.dataset[lang];
     }
     
+    // Обновляем суффиксы у счётчиков статистики
+    document.querySelectorAll('.stat-number[data-suffix-ru], .stat-number[data-suffix-ka]').forEach(element => {
+        const newSuffix = element.dataset['suffix' + lang.charAt(0).toUpperCase() + lang.slice(1)];
+        if (newSuffix) {
+            element.dataset.suffix = newSuffix;
+            // Обновляем текст, если элемент уже анимирован
+            if (element.dataset.animated === 'true') {
+                const currentNumber = element.textContent.replace(/[^\d]/g, '');
+                element.textContent = currentNumber + newSuffix;
+            } else {
+                // Если ещё не анимирован, показываем 0 с новым суффиксом
+                element.textContent = '0' + newSuffix;
+            }
+        }
+    });
+    
     // Обновляем meta description
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc && metaDesc.dataset[lang]) {
