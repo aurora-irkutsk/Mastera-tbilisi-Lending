@@ -196,7 +196,7 @@ function initOnlineCounter() {
     if (!counterElement) return;
 
     const minCount = 3;   // Минимальное количество мастеров
-    const maxCount = 58;  // Максимальное количество мастеров
+    const maxCount = 28;  // Максимальное количество мастеров (изменено с 58)
     
     // Генерируем случайное начальное значение при каждой загрузке страницы (от 1 до 12)
     const initialCount = Math.floor(Math.random() * 12) + 1;
@@ -205,12 +205,12 @@ function initOnlineCounter() {
     
     // Функция обновления счетчика
     function updateCounter() {
-        // Генерируем небольшое изменение от текущего значения (от -8 до +8)
-        const minChange = -8;
-        const maxChange = 8;
+        // Генерируем плавное изменение от текущего значения (от -3 до +3)
+        const minChange = -3;
+        const maxChange = 3;
         const change = Math.floor(Math.random() * (maxChange - minChange + 1)) + minChange;
         
-        // Применяем изменение, но остаёмся в пределах от 3 до 58
+        // Применяем изменение, но остаёмся в пределах от 3 до 28
         let targetCount = currentCount + change;
         targetCount = Math.max(minCount, Math.min(maxCount, targetCount));
         
