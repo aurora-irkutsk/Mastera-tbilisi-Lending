@@ -1632,7 +1632,7 @@ footer {
 
 .lang-btn {
     background: transparent;
-    border: none;
+    border: 2px solid var(--construction-orange);
     color: rgba(255, 255, 255, 0.6);
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -1652,6 +1652,7 @@ footer {
 .lang-btn.active {
     background: linear-gradient(135deg, var(--construction-yellow), var(--construction-orange));
     color: var(--dark-concrete);
+    border: 2px solid transparent;
     box-shadow: 0 4px 15px rgba(253, 185, 19, 0.4);
 }
 
