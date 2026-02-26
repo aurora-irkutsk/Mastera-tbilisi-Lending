@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initLanguageSwitcher() {
     const langButtons = document.querySelectorAll('.lang-btn');
-    const savedLang = localStorage.getItem('language') || 'ru';
+    const savedLang = localStorage.getItem('language') || 'ka';
     
     // Устанавливаем сохраненный язык
     setLanguage(savedLang);
