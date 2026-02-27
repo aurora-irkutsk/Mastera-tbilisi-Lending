@@ -1980,10 +1980,15 @@ footer {
     
     /* Адаптация кнопки "Вверх" для мобильных */
     .scroll-to-top {
-        bottom: 20px;
-        right: 20px;
+        bottom: 25px;
+        right: 25px;
         width: 50px;
         height: 50px;
+        box-shadow: 0 0 20px rgba(253, 185, 19, 0.6), 0 0 40px rgba(253, 185, 19, 0.4);
+    }
+    
+    .scroll-to-top:hover {
+        box-shadow: 0 0 30px rgba(253, 185, 19, 0.8), 0 0 50px rgba(253, 185, 19, 0.5);
     }
     
     .scroll-to-top svg {
@@ -1994,10 +1999,15 @@ footer {
 
 @media (max-width: 480px) {
     .scroll-to-top {
-        bottom: 15px;
-        right: 15px;
+        bottom: 20px;
+        right: 20px;
         width: 45px;
         height: 45px;
+        box-shadow: 0 0 18px rgba(253, 185, 19, 0.6), 0 0 35px rgba(253, 185, 19, 0.4);
+    }
+    
+    .scroll-to-top:hover {
+        box-shadow: 0 0 28px rgba(253, 185, 19, 0.8), 0 0 45px rgba(253, 185, 19, 0.5);
     }
     
     .scroll-to-top svg {
