@@ -883,6 +883,29 @@
       </form>
     </div>
   </div>
+
+  <!-- Модальное окно благодарности -->
+  <div id="thankYouModal" class="thank-you-modal">
+    <div class="thank-you-content">
+      <div class="thank-you-icon">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="36" stroke="url(#gradient-success)" stroke-width="4" class="success-circle"/>
+          <path d="M25 40L35 50L55 30" stroke="url(#gradient-success)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="success-check"/>
+          <defs>
+            <linearGradient id="gradient-success" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#06FFA5;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#00D488;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h2 class="thank-you-title" data-ru="Спасибо!" data-ka="გმადლობთ!">Спасибо!</h2>
+      <p class="thank-you-message" data-ru="Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время." data-ka="თქვენი განაცხადი წარმატებით გაიგზავნა. ჩვენ დაგიკავშირდებით უახლოეს მომავალში.">Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.</p>
+      <button class="thank-you-close" onclick="closeThankYouModal()">
+        <span data-ru="Закрыть" data-ka="დახურვა">Закрыть</span>
+      </button>
+    </div>
+  </div>
 </body>
 
 </html>
