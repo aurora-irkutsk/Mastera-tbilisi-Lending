@@ -56,11 +56,17 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     background: var(--dark-concrete);
     color: var(--white);
     overflow-x: hidden;
+    width: 100%;
     line-height: 1.6;
 }
 
@@ -164,6 +170,8 @@ header {
     align-items: center;
     flex-wrap: wrap;
     gap: 1.5rem;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .logo {
@@ -298,6 +306,8 @@ header {
     padding: 3rem 5% 8rem;
     text-align: center;
     z-index: 1;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .hero h1,
@@ -510,6 +520,8 @@ header {
     position: relative;
     z-index: 1;
     padding: 0 5% 4rem;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .split-sections {
@@ -518,6 +530,8 @@ header {
     gap: 2rem;
     align-items: stretch;
     margin-bottom: 4rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 .section-card {
@@ -809,6 +823,8 @@ header {
     padding: 6rem 5% 4rem;
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .section-heading {
@@ -941,6 +957,8 @@ header {
     position: relative;
     z-index: 1;
     background: linear-gradient(180deg, transparent 0%, rgba(253, 185, 19, 0.03) 100%);
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .testimonials-container {
@@ -1107,6 +1125,8 @@ header {
     padding: 6rem 5% 4rem;
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .faq-container {
@@ -1228,6 +1248,8 @@ header {
     padding: 5rem 5%;
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .footer-cta-title {
@@ -1263,6 +1285,8 @@ footer {
     border-top: 4px solid var(--construction-yellow);
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .footer-text {
