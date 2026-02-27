@@ -818,7 +818,7 @@
   <div id="clientFormModal" class="modal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeClientForm()">&times;</span>
-      <h2 class="modal-title" data-ru="Заказать мастера" data-ka="შეუკვეთეთ ოსტატი">Заказать мастера</h2>
+      <h2 class="modal-title" data-ru="Заказать услугу мастера" data-ka="შეუკვეთეთ ოსტატის მომსახურება">Заказать услугу мастера</h2>
       <form action="https://formspree.io/f/xpqjbpyk" method="POST" class="contact-form" id="clientForm">
         <input type="text" name="name" placeholder="Ваше имя / თქვენი სახელი" data-ru-placeholder="Ваше имя" data-ka-placeholder="თქვენი სახელი" required minlength="2">
         <input type="tel" name="phone" id="clientPhone" placeholder="+995 5__ __ __ __" data-ru-placeholder="+995 5__ __ __ __" data-ka-placeholder="+995 5__ __ __ __" required pattern="^\+995[0-9]{9}$" title="Формат: +995XXXXXXXXX (9 цифр после +995)">
@@ -838,6 +838,12 @@
         <input type="text" name="address" placeholder="Адрес / მისამართი" data-ru-placeholder="Адрес" data-ka-placeholder="მისამართი" required minlength="5">
         <input type="hidden" name="_subject" value="Новая заявка от клиента - Тбилиси">
         <input type="hidden" name="_language" value="ru">
+        <div class="consent-wrapper">
+          <label class="consent-label">
+            <span class="consent-text" data-ru="Согласен на обработку персональных данных" data-ka="ვეთანხმები პერსონალური მონაცემების დამუშავებას">Согласен на обработку персональных данных</span>
+            <input type="checkbox" name="consent" id="clientConsent" class="consent-checkbox" checked>
+          </label>
+        </div>
         <button type="submit" class="submit-btn" id="clientSubmitBtn" data-ru="Отправить заявку" data-ka="განაცხადის გაგზავნა">Отправить заявку</button>
       </form>
     </div>
@@ -867,31 +873,14 @@
         <textarea name="about" rows="3" placeholder="О себе / თქვენს შესახებ" data-ru-placeholder="О себе" data-ka-placeholder="თქვენს შესახებ" required minlength="20"></textarea>
         <input type="hidden" name="_subject" value="Новая регистрация мастера - Тбилиси">
         <input type="hidden" name="_language" value="ru">
+        <div class="consent-wrapper">
+          <label class="consent-label">
+            <span class="consent-text" data-ru="Согласен на обработку персональных данных" data-ka="ვეთანხმები პერსონალური მონაცემების დამუშავებას">Согласен на обработку персональных данных</span>
+            <input type="checkbox" name="consent" id="masterConsent" class="consent-checkbox" checked>
+          </label>
+        </div>
         <button type="submit" class="submit-btn" id="masterSubmitBtn" data-ru="Зарегистрироваться" data-ka="რეგისტრაცია">Зарегистрироваться</button>
       </form>
-    </div>
-  </div>
-
-  <!-- Модальное окно благодарности -->
-  <div id="thankYouModal" class="thank-you-modal">
-    <div class="thank-you-content">
-      <div class="thank-you-icon">
-        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="36" stroke="url(#gradient-success)" stroke-width="4" class="success-circle"/>
-          <path d="M25 40L35 50L55 30" stroke="url(#gradient-success)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="success-check"/>
-          <defs>
-            <linearGradient id="gradient-success" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#06FFA5;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#00D488;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <h2 class="thank-you-title" data-ru="Спасибо!" data-ka="გმადლობთ!">Спасибо!</h2>
-      <p class="thank-you-message" data-ru="Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время." data-ka="თქვენი განაცხადი წარმატებით გაიგზავნა. ჩვენ დაგიკავშირდებით უახლოეს მომავალში.">Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.</p>
-      <button class="thank-you-close" onclick="closeThankYouModal()">
-        <span data-ru="Закрыть" data-ka="დახურვა">Закрыть</span>
-      </button>
     </div>
   </div>
 </body>

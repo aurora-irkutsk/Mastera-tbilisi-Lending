@@ -375,6 +375,43 @@ function initModalForms() {
     
     // Автоформатирование телефонных номеров
     initPhoneFormatting();
+    
+    // Управление кнопками submit через checkbox
+    initConsentCheckboxes();
+    
+    // Валидация форм перед отправкой
+    const clientForm = document.getElementById('clientForm');
+    const masterForm = document.getElementById('masterForm');
+    
+    if (clientForm) {
+        clientForm.addEventListener('submit', validateForm);
+    }
+    
+    if (masterForm) {
+        masterForm.addEventListener('submit', validateForm);
+    }
+}
+
+// Управление активностью кнопок submit
+function initConsentCheckboxes() {
+    const clientConsent = document.getElementById('clientConsent');
+    const clientSubmitBtn = document.getElementById('clientSubmitBtn');
+    const masterConsent = document.getElementById('masterConsent');
+    const masterSubmitBtn = document.getElementById('masterSubmitBtn');
+    
+    // Обработчик для формы клиента
+    if (clientConsent && clientSubmitBtn) {
+        clientConsent.addEventListener('change', function() {
+            clientSubmitBtn.disabled = !this.checked;
+        });
+    }
+    
+    // Обработчик для формы мастера
+    if (masterConsent && masterSubmitBtn) {
+        masterConsent.addEventListener('change', function() {
+            masterSubmitBtn.disabled = !this.checked;
+        });
+    }
 }
 
 // Форматирование телефонных номеров для Грузии
@@ -422,7 +459,8 @@ function initPhoneFormatting() {
 }
 
 // Валидация формы перед отправкой
-function validateForm(form) {
+function validateForm(e) {
+    const form = e.target;
     const phoneInput = form.querySelector('input[type="tel"]');
     const telegramInput = form.querySelector('input[name="telegram"]');
     
@@ -432,6 +470,7 @@ function validateForm(form) {
         const phonePattern = /^\+995[0-9]{9}$/;
         
         if (!phonePattern.test(phoneValue)) {
+            e.preventDefault();
             alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
             phoneInput.focus();
             return false;
@@ -442,6 +481,7 @@ function validateForm(form) {
         const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
         
         if (!validCodes.includes(operatorCode)) {
+            e.preventDefault();
             alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
             phoneInput.focus();
             return false;
@@ -454,6 +494,7 @@ function validateForm(form) {
         const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
         
         if (!telegramPattern.test(telegramValue)) {
+            e.preventDefault();
             alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
             telegramInput.focus();
             return false;
@@ -525,125 +566,3 @@ function initScrollToTop() {
         });
     });
 }
-
-// ============================================
-// МОДАЛЬНОЕ ОКНО БЛАГОДАРНОСТИ
-// ============================================
-
-function showThankYouModal() {
-    const modal = document.getElementById('thankYouModal');
-    if (!modal) return;
-    
-    modal.classList.add('show');
-    
-    // Отправляем событие в Google Analytics
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'form_submit_success', {
-            'event_category': 'forms',
-            'event_label': 'Form Submitted Successfully'
-        });
-        
-        // Виртуальная страница благодарности для отслеживания конверсий
-        gtag('event', 'page_view', {
-            page_title: 'Thank You',
-            page_location: window.location.href + '#thank-you',
-            page_path: '/thank-you'
-        });
-    }
-}
-
-function closeThankYouModal() {
-    const modal = document.getElementById('thankYouModal');
-    if (!modal) return;
-    
-    modal.classList.remove('show');
-}
-
-// Перехватываем отправку форм Formspree
-function initFormSubmitHandlers() {
-    const clientForm = document.getElementById('clientForm');
-    const masterForm = document.getElementById('masterForm');
-    
-    // Обработчик для формы клиента
-    if (clientForm) {
-        clientForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Валидация формы перед отправкой
-            if (!validateForm(this)) {
-                return; // Останавливаем отправку, если валидация не прошла
-            }
-            
-            const formData = new FormData(this);
-            const action = this.getAttribute('action');
-            
-            try {
-                const response = await fetch(action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Закрываем форму
-                    closeClientForm();
-                    // Показываем благодарность
-                    showThankYouModal();
-                    // Очищаем форму
-                    this.reset();
-                } else {
-                    alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
-            }
-        });
-    }
-    
-    // Обработчик для формы мастера
-    if (masterForm) {
-        masterForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Валидация формы перед отправкой
-            if (!validateForm(this)) {
-                return; // Останавливаем отправку, если валидация не прошла
-            }
-            
-            const formData = new FormData(this);
-            const action = this.getAttribute('action');
-            
-            try {
-                const response = await fetch(action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Закрываем форму
-                    closeMasterForm();
-                    // Показываем благодарность
-                    showThankYouModal();
-                    // Очищаем форму
-                    this.reset();
-                } else {
-                    alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
-            }
-        });
-    }
-}
-
-// Инициализируем обработчики при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    initFormSubmitHandlers();
-});
