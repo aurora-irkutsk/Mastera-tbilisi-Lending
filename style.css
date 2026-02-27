@@ -67,6 +67,7 @@ body {
     color: var(--white);
     overflow-x: hidden;
     width: 100%;
+    min-height: 100vh;
     line-height: 1.6;
 }
 
@@ -1864,6 +1865,28 @@ footer {
     border: 2px solid rgba(253, 185, 19, 0.3);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     animation: slideUp 0.3s ease;
+    
+    /* Убираем двойной скроллбар */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: thin;  /* Firefox */
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--construction-yellow);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--construction-orange);
 }
 
 @keyframes slideUp {
