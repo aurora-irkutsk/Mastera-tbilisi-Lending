@@ -1906,7 +1906,7 @@ footer {
     transform: translateY(100px);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 999;
-    box-shadow: 0 8px 25px rgba(253, 185, 19, 0.4);
+    box-shadow: 0 0 20px rgba(253, 185, 19, 0.5), 0 0 40px rgba(253, 185, 19, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1926,7 +1926,7 @@ footer {
 
 .scroll-to-top:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(253, 185, 19, 0.6);
+    box-shadow: 0 0 30px rgba(253, 185, 19, 0.7), 0 0 50px rgba(253, 185, 19, 0.4);
     background: linear-gradient(135deg, var(--construction-orange), var(--construction-yellow));
 }
 
@@ -1941,10 +1941,10 @@ footer {
 
 @keyframes pulse {
     0%, 100% {
-        box-shadow: 0 8px 25px rgba(253, 185, 19, 0.4);
+        box-shadow: 0 0 20px rgba(253, 185, 19, 0.5), 0 0 40px rgba(253, 185, 19, 0.3);
     }
     50% {
-        box-shadow: 0 8px 35px rgba(253, 185, 19, 0.7);
+        box-shadow: 0 0 30px rgba(253, 185, 19, 0.8), 0 0 60px rgba(253, 185, 19, 0.5);
     }
 }
 
