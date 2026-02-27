@@ -375,32 +375,6 @@ function initModalForms() {
     
     // Автоформатирование телефонных номеров
     initPhoneFormatting();
-    
-    // Управление кнопками submit через checkbox
-    initConsentCheckboxes();
-    
-}
-
-// Управление активностью кнопок submit
-function initConsentCheckboxes() {
-    const clientConsent = document.getElementById('clientConsent');
-    const clientSubmitBtn = document.getElementById('clientSubmitBtn');
-    const masterConsent = document.getElementById('masterConsent');
-    const masterSubmitBtn = document.getElementById('masterSubmitBtn');
-    
-    // Обработчик для формы клиента
-    if (clientConsent && clientSubmitBtn) {
-        clientConsent.addEventListener('change', function() {
-            clientSubmitBtn.disabled = !this.checked;
-        });
-    }
-    
-    // Обработчик для формы мастера
-    if (masterConsent && masterSubmitBtn) {
-        masterConsent.addEventListener('change', function() {
-            masterSubmitBtn.disabled = !this.checked;
-        });
-    }
 }
 
 // Форматирование телефонных номеров для Грузии
@@ -619,11 +593,6 @@ function initFormSubmitHandlers() {
                     showThankYouModal();
                     // Очищаем форму
                     this.reset();
-                    // Сбрасываем состояние checkbox и кнопки
-                    const submitBtn = document.getElementById('clientSubmitBtn');
-                    const consent = document.getElementById('clientConsent');
-                    if (submitBtn) submitBtn.disabled = true;
-                    if (consent) consent.checked = false;
                 } else {
                     alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
                 }
@@ -663,11 +632,6 @@ function initFormSubmitHandlers() {
                     showThankYouModal();
                     // Очищаем форму
                     this.reset();
-                    // Сбрасываем состояние checkbox и кнопки
-                    const submitBtn = document.getElementById('masterSubmitBtn');
-                    const consent = document.getElementById('masterConsent');
-                    if (submitBtn) submitBtn.disabled = true;
-                    if (consent) consent.checked = false;
                 } else {
                     alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
                 }
