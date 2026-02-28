@@ -1895,18 +1895,17 @@ footer {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 55px;
-    height: 55px;
-    background: linear-gradient(135deg, var(--construction-yellow), var(--construction-orange));
-    border: none;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid var(--construction-yellow);
     border-radius: 50%;
     cursor: pointer;
     opacity: 0;
     visibility: hidden;
     transform: translateY(100px);
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     z-index: 999;
-    box-shadow: 0 0 20px rgba(253, 185, 19, 0.5), 0 0 40px rgba(253, 185, 19, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1916,40 +1915,35 @@ footer {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    animation: bounce-vertical 1.5s ease-in-out infinite;
 }
 
 .scroll-to-top svg {
     width: 24px;
     height: 24px;
-    color: var(--dark-concrete);
+    color: var(--construction-yellow);
 }
 
 .scroll-to-top:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(253, 185, 19, 0.7), 0 0 50px rgba(253, 185, 19, 0.4);
-    background: linear-gradient(135deg, var(--construction-orange), var(--construction-yellow));
+    border-color: var(--construction-orange);
+}
+
+.scroll-to-top:hover svg {
+    color: var(--construction-orange);
 }
 
 .scroll-to-top:active {
-    transform: translateY(-2px) scale(0.95);
+    transform: scale(0.95);
 }
 
-/* Анимация пульсации при появлении */
-.scroll-to-top.visible {
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
+/* Анимация подёргивания вверх-вниз */
+@keyframes bounce-vertical {
     0%, 100% {
-        box-shadow: 0 0 20px rgba(253, 185, 19, 0.5), 0 0 40px rgba(253, 185, 19, 0.3);
+        transform: translateY(0);
     }
     50% {
-        box-shadow: 0 0 30px rgba(253, 185, 19, 0.8), 0 0 60px rgba(253, 185, 19, 0.5);
+        transform: translateY(-8px);
     }
-}
-
-.scroll-to-top:hover {
-    animation: none;
 }
 
 /* ============================================
