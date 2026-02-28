@@ -1909,6 +1909,12 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    /* Убираем дефолтное выделение на мобильных */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .scroll-to-top.visible {
