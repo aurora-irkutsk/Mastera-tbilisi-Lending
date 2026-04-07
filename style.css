@@ -794,6 +794,17 @@ header {
 }
 
 /* ============================================
+   HOW IT WORKS - CLIENTS (SAME YELLOW THEME)
+   ============================================ */
+.how-it-works-clients {
+    /* Same background as masters section */
+}
+
+.how-it-works-clients .section-heading {
+    /* Already using yellow-orange gradient from .section-heading */
+}
+
+/* ============================================
    STEPS BUTTON
    ============================================ */
 .steps-button {
