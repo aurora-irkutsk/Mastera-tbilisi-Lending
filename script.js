@@ -372,6 +372,7 @@ function initModalForms() {
             closeClientForm();
             closeMasterForm();
             closeClientLeadForm();
+            closeThankYou();
         }
     });
 
@@ -558,26 +559,70 @@ function closeClientLeadForm() {
     }
 }
 
+function openThankYou() {
+    const modal = document.getElementById('thankYouModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeThankYou() {
+    const modal = document.getElementById('thankYouModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // Трекинг отправки формы заявки
 function initLeadFormTracking() {
     const leadForm = document.getElementById('clientLeadForm');
     
     if (leadForm) {
         leadForm.addEventListener('submit', function(e) {
-            // Отправляем событие конверсии в аналитику
-            gtag('event', 'conversion', {
-                'send_to': 'AW-CONVERSION_ID/Mastera-Tbilisi',
-                'event_category': 'leads',
-                'event_label': 'SUBMIT_LEAD_FORM_1',
-                'value': 1.0,
-                'currency': 'GEL'
-            });
+            e.preventDefault();
 
-            // Дополнительное событие для отслеживания
-            gtag('event', 'submit_lead_form', {
-                'event_category': 'conversion',
-                'event_label': 'Заявка отправлена',
-                'form_location': 'Как найти мастера'
+            // Проверяем валидность перед отправкой
+            if (!validateLeadForm(e)) {
+                return;
+            }
+
+            // Собираем данные формы
+            const formData = new FormData(leadForm);
+
+            // Отправляем форму через Formspree
+            fetch('https://formspree.io/f/xpqjbpyk', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Трекинг конверсии
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-CONVERSION_ID/Mastera-Tbilisi',
+                        'event_category': 'leads',
+                        'event_label': 'SUBMIT_LEAD_FORM_1',
+                        'value': 1.0,
+                        'currency': 'GEL'
+                    });
+
+                    gtag('event', 'submit_lead_form', {
+                        'event_category': 'conversion',
+                        'event_label': 'Заявка отправлена',
+                        'form_location': 'Как найти мастера'
+                    });
+
+                    // Закрываем форму и показываем благодарность
+                    closeClientLeadForm();
+                    openThankYou();
+                    leadForm.reset();
+                } else {
+                    alert('Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.');
             });
         });
     }
@@ -594,9 +639,6 @@ function initLeadFormTracking() {
             leadSubmitBtn.disabled = !this.checked;
         });
     }
-
-    // Валидация формы
-    leadForm.addEventListener('submit', validateLeadForm);
 }
 
 function validateLeadForm(e) {
@@ -610,7 +652,6 @@ function validateLeadForm(e) {
     const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
 
     if (!telegramValue && !whatsappValue) {
-        e.preventDefault();
         const currentLang = document.documentElement.lang;
         if (currentLang === 'ka') {
             alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
@@ -631,7 +672,6 @@ function validateLeadForm(e) {
         const phonePattern = /^\+995[0-9]{9}$/;
 
         if (!phonePattern.test(phoneValue)) {
-            e.preventDefault();
             alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
             phoneInput.focus();
             return false;
@@ -642,7 +682,6 @@ function validateLeadForm(e) {
         const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
 
         if (!validCodes.includes(operatorCode)) {
-            e.preventDefault();
             alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
             phoneInput.focus();
             return false;
@@ -653,7 +692,6 @@ function validateLeadForm(e) {
     if (telegramValue) {
         const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
         if (!telegramPattern.test(telegramValue)) {
-            e.preventDefault();
             alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
             telegramInput.focus();
             return false;
