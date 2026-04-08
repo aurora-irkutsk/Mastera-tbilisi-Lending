@@ -1863,6 +1863,31 @@ footer {
     animation: thankYouPulse 2s ease-in-out infinite;
 }
 
+.thank-you-icon-master {
+    background: radial-gradient(circle at 30% 30%, rgba(253, 185, 19, 0.2), rgba(253, 185, 19, 0.05));
+    border-color: var(--construction-yellow);
+    box-shadow: 0 0 50px rgba(253, 185, 19, 0.4), inset 0 0 30px rgba(253, 185, 19, 0.1);
+}
+
+.thank-you-icon-master svg {
+    color: var(--construction-yellow);
+}
+
+@keyframes thankYouPulseMaster {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 50px rgba(253, 185, 19, 0.4), inset 0 0 30px rgba(253, 185, 19, 0.1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 70px rgba(253, 185, 19, 0.6), inset 0 0 40px rgba(253, 185, 19, 0.15);
+    }
+}
+
+.thank-you-icon-master {
+    animation: thankYouPulseMaster 2s ease-in-out infinite;
+}
+
 .thank-you-icon svg {
     width: 60px;
     height: 60px;
@@ -1959,6 +1984,14 @@ footer {
 
 .thank-you-btn:active {
     transform: translateY(0);
+}
+
+.thank-you-master-btn {
+    background: linear-gradient(135deg, var(--construction-yellow), var(--construction-orange));
+}
+
+.thank-you-master-btn:hover {
+    box-shadow: 0 15px 40px rgba(253, 185, 19, 0.5);
 }
 
 .contact-form input:invalid:not(:placeholder-shown),

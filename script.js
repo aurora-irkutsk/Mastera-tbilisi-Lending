@@ -376,6 +376,7 @@ function initModalForms() {
             closeClientLeadForm();
             closeMasterLeadForm();
             closeThankYou();
+            closeMasterThankYou();
         }
     });
 
@@ -576,6 +577,20 @@ function closeThankYou() {
     }
 }
 
+function openMasterThankYou() {
+    const modal = document.getElementById('masterThankYouModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeMasterThankYou() {
+    const modal = document.getElementById('masterThankYouModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // ============================================
 // МОДАЛЬНОЕ ОКНО ДЛЯ ЗАЯВКИ МАСТЕРА (MASTER LEAD FORM)
 // ============================================
@@ -645,7 +660,7 @@ function initMasterLeadFormTracking() {
 
                     // Закрываем форму и показываем благодарность
                     closeMasterLeadForm();
-                    openThankYou();
+                    openMasterThankYou();
                     masterLeadForm.reset();
                 } else {
                     alert('Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.');
