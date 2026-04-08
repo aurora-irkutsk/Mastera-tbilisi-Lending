@@ -1751,7 +1751,12 @@ footer {
     background: linear-gradient(135deg, var(--construction-yellow), var(--construction-orange));
     color: var(--dark-concrete);
     border: 2px solid transparent;
+    outline: none;
     box-shadow: 0 4px 15px rgba(253, 185, 19, 0.4);
+}
+
+.lang-btn:focus {
+    outline: none;
 }
 
 /* ============================================
