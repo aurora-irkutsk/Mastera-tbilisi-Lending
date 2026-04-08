@@ -219,6 +219,11 @@ header {
     display: inline-block;
 }
 
+.header-phone-link:visited,
+.header-phone-link:-webkit-any-link {
+    color: var(--safety-green);
+}
+
 .header-phone-link:hover {
     color: var(--construction-yellow);
     text-shadow: 0 0 10px rgba(253, 185, 19, 0.5);
@@ -233,6 +238,11 @@ header {
     text-decoration: none;
     transition: all 0.3s ease;
     white-space: nowrap;
+}
+
+.header-support-link:visited,
+.header-support-link:-webkit-any-link {
+    color: var(--construction-yellow);
 }
 
 .header-support-link:hover {
