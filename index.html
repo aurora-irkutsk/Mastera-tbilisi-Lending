@@ -630,8 +630,8 @@
       </div>
 
       <div class="steps-button">
-        <button class="cta-button cta-masters" onclick="window.open('https://t.me/mastera_tbilisi_bot', '_blank')">
-          <span class="cta-main" data-ru="Получать заказы" data-ka="შეკვეთების მიღება">Получать заказы</span>
+        <button class="cta-button cta-masters" onclick="openMasterLeadForm()">
+          <span class="cta-main" data-ru="Оставить заявку" data-ka="განაცხადის დატოვება">Оставить заявку</span>
           <span class="cta-sub" data-ru="Быстрый старт" data-ka="სწრაფი დაწყება">Быстрый старт</span>
         </button>
       </div>
@@ -1118,6 +1118,54 @@
         <span class="badge-value" data-ru="30-60 минут" data-ka="30-60 წუთი">30-60 минут</span>
       </div>
       <button class="submit-btn thank-you-btn" onclick="closeThankYou()" data-ru="Отлично!" data-ka="შესანიშნავია!">Отлично!</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно для заявки мастера -->
+  <div id="masterLeadFormModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeMasterLeadForm()">&times;</span>
+      <h2 class="modal-title" data-ru="Регистрация мастера" data-ka="ოსტატის რეგისტრაცია">Регистрация мастера</h2>
+      <p class="modal-subtitle" data-ru="Начните получать заказы уже сегодня" data-ka="დაიწყეთ შეკვეთების მიღება დღესვე">Начните получать заказы уже сегодня</p>
+      <form action="https://formspree.io/f/mykdoebj" method="POST" class="contact-form" id="masterLeadForm">
+        <input type="text" name="name" placeholder="Ваше имя / თქვენი სახელი" data-ru-placeholder="Ваше имя" data-ka-placeholder="თქვენი სახელი" required minlength="2">
+        <input type="tel" name="phone" id="masterLeadPhone" placeholder="+995 5__ __ __ __" data-ru-placeholder="+995 5__ __ __ __" data-ka-placeholder="+995 5__ __ __ __" required pattern="^\+995[0-9]{9}$" title="Формат: +995XXXXXXXXX (9 цифр после +995)">
+        <input type="text" name="telegram" placeholder="Telegram: @username" data-ru-placeholder="Telegram: @username" data-ka-placeholder="Telegram: @username" data-contact-required pattern="^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})?$" title="Введите @username или номер телефона">
+        <p class="contact-or-text" data-ru="ИЛИ" data-ka="ან">ИЛИ</p>
+        <input type="text" name="whatsapp" placeholder="WhatsApp: номер телефона" data-ru-placeholder="WhatsApp: номер телефона" data-ka-placeholder="WhatsApp: ნომერი" data-contact-required>
+        <select name="specialty" required>
+          <option value="" disabled selected data-ru="Ваша специальность" data-ka="თქვენი სპეციალობა">Ваша специальность</option>
+          <option value="Сантехник" data-ru="Сантехник" data-ka="სანტექნიკოსი">Сантехник</option>
+          <option value="Электрик" data-ru="Электрик" data-ka="ელექტრიკოსი">Электрик</option>
+          <option value="Отделочник" data-ru="Отделочник" data-ka="შემკეთებელი">Отделочник</option>
+          <option value="Мебельщик" data-ru="Мебельщик" data-ka="ავეჯის ოსტატი">Мебельщик</option>
+          <option value="Клининг" data-ru="Клининг" data-ka="დამლაგებელი">Клининг</option>
+          <option value="Грузчик" data-ru="Грузчик" data-ka="მზიდავი">Грузчик</option>
+          <option value="Другое" data-ru="Другое" data-ka="სხვა">Другое</option>
+        </select>
+        <input type="number" name="experience" placeholder="Опыт работы (лет) / გამოცდილება (წლები)" data-ru-placeholder="Опыт работы (лет)" data-ka-placeholder="გამოცდილება (წლები)" required min="0" max="50">
+        <select name="district" required>
+          <option value="" disabled selected data-ru="Район работы" data-ka="სამუშაო რაიონი">Район работы</option>
+          <option value="Vake" data-ru="Ваке" data-ka="ვაკე">Ваке</option>
+          <option value="Saburtalo" data-ru="Сабуртало" data-ka="საბურთალო">Сабуртало</option>
+          <option value="Didube" data-ru="Дидубе" data-ka="დიდუბე">Дидубе</option>
+          <option value="Chugureti" data-ru="Чугурети" data-ka="ჩუღურეთი">Чугурети</option>
+          <option value="Isani" data-ru="Исани" data-ka="ისანი">Исани</option>
+          <option value="Samgori" data-ru="Самгори" data-ka="სამგორი">Самгори</option>
+          <option value="Gldani" data-ru="Глдани" data-ka="გლდანი">Глдани</option>
+          <option value="Nadzaladevi" data-ru="Нацалукети" data-ka="ნაძალადევი">Нацалукети</option>
+          <option value="All" data-ru="Все районы" data-ka="ყველა რაიონი">Все районы</option>
+        </select>
+        <textarea name="about" rows="3" placeholder="Расскажите о себе и опыте работы / მოგვითხროთ თქვენს შესახებ და გამოცდილებაზე" data-ru-placeholder="Расскажите о себе и опыте работы" data-ka-placeholder="მოგვითხროთ თქვენს შესახებ და გამოცდილებაზე" required minlength="20"></textarea>
+        <input type="hidden" name="_subject" value="Новая заявка мастера - Регистрация">
+        <input type="hidden" name="_language" value="ru">
+        <input type="text" name="_gotcha" style="display:none">
+        <label class="consent-label">
+          <input type="checkbox" id="masterLeadConsent" checked required>
+          <span data-ru="Согласен на обработку персональных данных" data-ka="ვთანხმობ პერსონალური მონაცემების დამუშავებაზე">Согласен на обработку персональных данных</span>
+        </label>
+        <button type="submit" class="submit-btn" id="masterLeadSubmitBtn" data-ru="Отправить заявку" data-ka="განაცხადის გაგზავნა">Отправить заявку</button>
+      </form>
     </div>
   </div>
 

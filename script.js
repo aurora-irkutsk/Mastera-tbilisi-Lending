@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initModalForms();
     initScrollToTop();
     initBotClickTracking();
+    initLeadFormTracking();
+    initMasterLeadFormTracking();
 });
 
 // ============================================
@@ -372,6 +374,7 @@ function initModalForms() {
             closeClientForm();
             closeMasterForm();
             closeClientLeadForm();
+            closeMasterLeadForm();
             closeThankYou();
         }
     });
@@ -419,7 +422,7 @@ function initConsentCheckboxes() {
 
 // Форматирование телефонных номеров для Грузии
 function initPhoneFormatting() {
-    const phoneInputs = document.querySelectorAll('#clientPhone, #masterPhone, #leadPhone');
+    const phoneInputs = document.querySelectorAll('#clientPhone, #masterPhone, #leadPhone, #masterLeadPhone');
     
     phoneInputs.forEach(input => {
         input.addEventListener('input', (e) => {
@@ -573,6 +576,160 @@ function closeThankYou() {
     }
 }
 
+// ============================================
+// МОДАЛЬНОЕ ОКНО ДЛЯ ЗАЯВКИ МАСТЕРА (MASTER LEAD FORM)
+// ============================================
+
+function openMasterLeadForm() {
+    const modal = document.getElementById('masterLeadFormModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+
+    // Трекинг события для аналитики
+    gtag('event', 'open_master_lead_form', {
+        'event_category': 'engagement',
+        'event_label': 'Открыта форма заявки мастера'
+    });
+}
+
+function closeMasterLeadForm() {
+    const modal = document.getElementById('masterLeadFormModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Трекинг отправки формы заявки мастера
+function initMasterLeadFormTracking() {
+    const masterLeadForm = document.getElementById('masterLeadForm');
+    
+    if (masterLeadForm) {
+        masterLeadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Проверяем валидность перед отправкой
+            if (!validateMasterLeadForm(e)) {
+                return;
+            }
+
+            // Собираем данные формы
+            const formData = new FormData(masterLeadForm);
+
+            // Отправляем форму через Formspree
+            fetch('https://formspree.io/f/mykdoebj', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Трекинг конверсии для Google Ads
+                    // ВАЖНО: Замените AW-XXXXXXXXX на ваш реальный Google Ads Conversion ID
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'conversion', {
+                            'send_to': 'AW-XXXXXXXXX/Mastera-Tbilisi',
+                            'event_category': 'leads',
+                            'event_label': 'SUBMIT_LEAD_FORM_2',
+                            'value': 1.0,
+                            'currency': 'GEL'
+                        });
+
+                        gtag('event', 'submit_master_lead_form', {
+                            'event_category': 'conversion',
+                            'event_label': 'Заявка мастера отправлена',
+                            'form_location': 'Как начать получать заказы'
+                        });
+                    }
+
+                    // Закрываем форму и показываем благодарность
+                    closeMasterLeadForm();
+                    openThankYou();
+                    masterLeadForm.reset();
+                } else {
+                    alert('Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.');
+            });
+        });
+    }
+
+    // Управление кнопкой submit через checkbox
+    const masterLeadConsent = document.getElementById('masterLeadConsent');
+    const masterLeadSubmitBtn = document.getElementById('masterLeadSubmitBtn');
+
+    if (masterLeadConsent && masterLeadSubmitBtn) {
+        masterLeadSubmitBtn.disabled = !masterLeadConsent.checked;
+        
+        masterLeadConsent.addEventListener('change', function() {
+            masterLeadSubmitBtn.disabled = !this.checked;
+        });
+    }
+}
+
+function validateMasterLeadForm(e) {
+    const form = e.target;
+    const phoneInput = document.getElementById('masterLeadPhone');
+    const telegramInput = form.querySelector('input[name="telegram"]');
+    const whatsappInput = form.querySelector('input[name="whatsapp"]');
+
+    // Проверка: хотя бы один из контактов должен быть заполнен
+    const telegramValue = telegramInput ? telegramInput.value.trim() : '';
+    const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
+
+    if (!telegramValue && !whatsappValue) {
+        const currentLang = document.documentElement.lang;
+        if (currentLang === 'ka') {
+            alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
+        } else {
+            alert('Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp');
+        }
+        if (telegramInput && !telegramValue) {
+            telegramInput.focus();
+        } else {
+            whatsappInput.focus();
+        }
+        return false;
+    }
+
+    // Проверка телефона
+    if (phoneInput) {
+        const phoneValue = phoneInput.value;
+        const phonePattern = /^\+995[0-9]{9}$/;
+
+        if (!phonePattern.test(phoneValue)) {
+            alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
+            phoneInput.focus();
+            return false;
+        }
+
+        // Проверка кода оператора
+        const operatorCode = phoneValue.substring(4, 6);
+        const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
+
+        if (!validCodes.includes(operatorCode)) {
+            alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
+            phoneInput.focus();
+            return false;
+        }
+    }
+
+    // Проверка формата Telegram, если заполнен
+    if (telegramValue) {
+        const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
+        if (!telegramPattern.test(telegramValue)) {
+            alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
+            telegramInput.focus();
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // Трекинг отправки формы заявки
 function initLeadFormTracking() {
     const leadForm = document.getElementById('clientLeadForm');
@@ -598,20 +755,25 @@ function initLeadFormTracking() {
                 }
             }).then(response => {
                 if (response.ok) {
-                    // Трекинг конверсии
-                    gtag('event', 'conversion', {
-                        'send_to': 'AW-CONVERSION_ID/Mastera-Tbilisi',
-                        'event_category': 'leads',
-                        'event_label': 'SUBMIT_LEAD_FORM_1',
-                        'value': 1.0,
-                        'currency': 'GEL'
-                    });
+                    // Трекинг конверсии для Google Ads
+                    // ВАЖНО: Замените AW-XXXXXXXXX на ваш реальный Google Ads Conversion ID
+                    // Его можно найти в Google Ads → Инструменты → Конверсии → Отслеживание конверсий
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'conversion', {
+                            'send_to': 'AW-XXXXXXXXX/Mastera-Tbilisi',
+                            'event_category': 'leads',
+                            'event_label': 'SUBMIT_LEAD_FORM_1',
+                            'value': 1.0,
+                            'currency': 'GEL'
+                        });
 
-                    gtag('event', 'submit_lead_form', {
-                        'event_category': 'conversion',
-                        'event_label': 'Заявка отправлена',
-                        'form_location': 'Как найти мастера'
-                    });
+                        // Альтернативный вариант (если используете Google Tag Manager)
+                        gtag('event', 'submit_lead_form', {
+                            'event_category': 'conversion',
+                            'event_label': 'Заявка отправлена',
+                            'form_location': 'Как найти мастера'
+                        });
+                    }
 
                     // Закрываем форму и показываем благодарность
                     closeClientLeadForm();
@@ -700,11 +862,6 @@ function validateLeadForm(e) {
 
     return true;
 }
-
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    initLeadFormTracking();
-});
 
 // ============================================
 // ОТСЛЕЖИВАНИЕ КЛИКОВ ПО КНОПКАМ TELEGRAM-БОТА
