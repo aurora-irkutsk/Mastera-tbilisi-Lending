@@ -282,7 +282,7 @@ function setLanguage(lang) {
     document.documentElement.lang = lang;
     
     // Обновляем все элементы с переводами
-    document.querySelectorAll('[data-ru], [data-ka]').forEach(element => {
+    document.querySelectorAll('[data-ru], [data-ka], [data-en]').forEach(element => {
         const text = element.dataset[lang];
         if (text) {
             if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
@@ -296,9 +296,9 @@ function setLanguage(lang) {
             }
         }
     });
-    
+
     // Обновляем placeholders
-    document.querySelectorAll('[data-ru-placeholder], [data-ka-placeholder]').forEach(element => {
+    document.querySelectorAll('[data-ru-placeholder], [data-ka-placeholder], [data-en-placeholder]').forEach(element => {
         const placeholder = element.dataset[lang + 'Placeholder'];
         if (placeholder) {
             element.placeholder = placeholder;
@@ -312,7 +312,7 @@ function setLanguage(lang) {
     }
     
     // Обновляем суффиксы у счётчиков статистики
-    document.querySelectorAll('.stat-number[data-suffix-ru], .stat-number[data-suffix-ka]').forEach(element => {
+    document.querySelectorAll('.stat-number[data-suffix-ru], .stat-number[data-suffix-ka], .stat-number[data-suffix-en]').forEach(element => {
         const newSuffix = element.dataset['suffix' + lang.charAt(0).toUpperCase() + lang.slice(1)];
         if (newSuffix) {
             element.dataset.suffix = newSuffix;
