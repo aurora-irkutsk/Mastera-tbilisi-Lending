@@ -881,7 +881,7 @@ header {
     padding: 6rem 5% 4rem;
     position: relative;
     z-index: 1;
-    background: linear-gradient(180deg, transparent 0%, rgba(253, 185, 19, 0.03) 100%);
+    background: transparent;
 }
 
 .testimonials-container {
