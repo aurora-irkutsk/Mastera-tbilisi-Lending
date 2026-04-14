@@ -484,9 +484,9 @@
             <li><strong data-ru="Безопасность" data-ka="უსაფრთხოება" data-en="Safety">Безопасность</strong> — <span data-ru="проверенные специалисты с портфолио" data-ka="გადამოწმებული სპეციალისტები პორტფოლიოთი" data-en="verified specialists with portfolio">проверенные специалисты с портфолио</span></li>
           </ul>
 
-          <button class="cta-button cta-clients" onclick="window.open('https://t.me/mastera_tbilisi_bot', '_blank')">
-            <span class="cta-main" data-ru="Найти мастера" data-ka="ოსტატის მოძიება" data-en="Find a master">Найти мастера</span>
-            <span class="cta-sub" data-ru="Telegram-Bot" data-ka="Telegram-Bot" data-en="Telegram-Bot">Telegram-Bot</span>
+          <button class="cta-button cta-clients" onclick="openClientLeadForm()">
+            <span class="cta-main" data-ru="Оставить заявку" data-ka="განაცხადის დატოვება" data-en="Submit a request">Оставить заявку</span>
+            <span class="cta-sub" data-ru="Надёжно и быстро" data-ka="საიმედოდ და სწრაფად" data-en="Reliable and fast">Надёжно и быстро</span>
           </button>
         </div>
 
@@ -519,9 +519,9 @@
             <li><strong data-ru="Работай на себя" data-ka="იმუშავეთ საკუთარ თავზე" data-en="Work for yourself">Работай на себя</strong> — <span data-ru="никаких начальников и графиков" data-ka="უფროსებისა და გრაფიკების გარეშე" data-en="no bosses or schedules">никаких начальников и графиков</span></li>
           </ul>
 
-          <button class="cta-button cta-masters" onclick="window.open('https://t.me/mastera_tbilisi_bot', '_blank')">
-            <span class="cta-main" data-ru="Получать заказы" data-ka="შეკვეთების მიღება" data-en="Get orders">Получать заказы</span>
-            <span class="cta-sub" data-ru="Telegram-Bot" data-ka="Telegram-Bot" data-en="Telegram-Bot">Telegram-Bot</span>
+          <button class="cta-button cta-masters" onclick="openMasterLeadForm()">
+            <span class="cta-main" data-ru="Оставить заявку" data-ka="განაცხადის დატოვება" data-en="Submit a request">Оставить заявку</span>
+            <span class="cta-sub" data-ru="Быстрый старт" data-ka="სწრაფი დაწყება" data-en="Quick start">Быстрый старт</span>
           </button>
         </div>
 
@@ -1064,12 +1064,10 @@
     </p>
   </footer>
   
-  <!-- Кнопка "Вверх" -->
-  <button id="scrollToTop" class="scroll-to-top" aria-label="Наверх">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
+  <!-- Кнопка Telegram -->
+  <a href="https://t.me/mastera_tbilisi_bot" target="_blank" id="scrollToTop" class="scroll-to-top telegram-fab" aria-label="Написать в Telegram">
+    <img src="image/telegram-icon.jfif" alt="Telegram">
+  </a>
   
   <!-- Модальное окно для заявки клиента -->
   <div id="clientLeadFormModal" class="modal">

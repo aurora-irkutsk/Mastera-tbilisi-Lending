@@ -898,30 +898,11 @@ function initBotClickTracking() {
 }
 
 // ============================================
-// КНОПКА "ВВЕРХ"
+// ПЛАВАЮЩАЯ КНОПКА TELEGRAM
 // ============================================
 
 function initScrollToTop() {
-    const scrollButton = document.getElementById('scrollToTop');
-    
-    if (!scrollButton) return;
-    
-    // Показываем/скрываем кнопку при скролле
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            scrollButton.classList.add('visible');
-        } else {
-            scrollButton.classList.remove('visible');
-        }
-    });
-    
-    // Плавный скролл наверх при клике
-    scrollButton.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+    // Кнопка Telegram теперь видна постоянно
 }
 
 // ============================================

@@ -2237,18 +2237,29 @@ footer {
     animation: bounce-vertical 1.5s ease-in-out infinite;
 }
 
-.scroll-to-top svg {
-    width: 24px;
-    height: 24px;
-    color: var(--construction-yellow);
+.scroll-to-top.telegram-fab {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    animation: bounce-vertical 2s ease-in-out infinite; /* Постоянная пульсация */
+    width: 65px;
+    height: 65px;
+    border: 3px solid #0088cc;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
 }
 
-.scroll-to-top:hover {
-    border-color: var(--construction-orange);
+.scroll-to-top.telegram-fab:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 25px rgba(0, 136, 204, 0.6);
+    border-color: #0099e6;
+    animation: none; /* Отключаем подпрыгивание при наведении */
 }
 
-.scroll-to-top:hover svg {
-    color: var(--construction-orange);
+.scroll-to-top.telegram-fab img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .scroll-to-top:active {
