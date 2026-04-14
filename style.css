@@ -364,11 +364,13 @@ header {
 .typing-cursor {
     display: inline-block;
     width: 3px;
-    height: 0.9em;
+    height: 1em;
     background-color: #d0d0d0;
     margin-left: 4px;
     animation: blink 0.7s infinite;
     vertical-align: text-bottom;
+    transform: scaleY(0.7);
+    transform-origin: center;
 }
 
 @keyframes blink {
