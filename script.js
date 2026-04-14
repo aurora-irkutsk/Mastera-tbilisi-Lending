@@ -922,41 +922,82 @@ function initTypingEffect() {
     const titleElement = document.querySelector('.hero-title');
     if (!titleElement) return;
 
-    // Тексты для разных языков
-    const texts = {
-        ru: titleElement.dataset.ru,
-        ka: titleElement.dataset.ka,
-        en: titleElement.dataset.en
+    // Части текста для разных языков
+    const textParts = {
+        ru: {
+            start: "Сервис ",
+            option1: "поиска мастеров Тбилиси",
+            option2: "подбора мастеров Тбилиси"
+        },
+        en: {
+            start: "Master ",
+            option1: "search service Tbilisi",
+            option2: "matching service Tbilisi"
+        },
+        ka: {
+            start: "სერვისი ",
+            option1: "ძიების თბილისში",
+            option2: "შერჩევის თბილისში"
+        }
     };
 
     const currentLang = document.documentElement.lang || 'ru';
-    const textToType = texts[currentLang] || texts.ru;
-    if (!textToType) return;
+    const parts = textParts[currentLang] || textParts.ru;
+    
+    // Скорости (мс)
+    const typeSpeed = 180;
+    const deleteSpeed = 50;
+    const pauseTime = 1000;
 
-    // Очищаем заголовок и добавляем курсор
-    titleElement.textContent = '';
+    // Создаем курсор
     const cursor = document.createElement('span');
     cursor.className = 'typing-cursor';
+    titleElement.innerHTML = ''; // Очищаем перед стартом
     titleElement.appendChild(cursor);
 
-    let charIndex = 0;
-    const typingSpeed = 180; // Скорость печати (мс)
+    // Функция паузы
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    function typeCharacter() {
-        if (charIndex < textToType.length) {
-            // Вставляем символ перед курсором
-            const textNode = document.createTextNode(textToType[charIndex]);
-            titleElement.insertBefore(textNode, cursor);
-            charIndex++;
-            setTimeout(typeCharacter, typingSpeed);
-        } else {
-            // Убираем курсор после завершения печати
-            setTimeout(() => {
-                cursor.remove();
-            }, 1000);
+    // Функция печати
+    async function typeText(text) {
+        for (let i = 0; i < text.length; i++) {
+            // Вставляем перед курсором
+            const char = document.createTextNode(text[i]);
+            titleElement.insertBefore(char, cursor);
+            await wait(typeSpeed);
         }
     }
 
-    // Запускаем печать через небольшую задержку
-    setTimeout(typeCharacter, 500);
+    // Функция стирания
+    async function deleteText(count) {
+        for (let i = 0; i < count; i++) {
+            // Удаляем символ перед курсором
+            if (titleElement.childNodes.length > 1) { // >1 потому что последний узел - курсор
+                titleElement.removeChild(titleElement.childNodes[titleElement.childNodes.length - 2]);
+            }
+            await wait(deleteSpeed);
+        }
+    }
+
+    // Основной сценарий
+    async function runAnimation() {
+        // 1. Печатаем: "Сервис поиска..."
+        await typeText(parts.start + parts.option1);
+        
+        // 2. Ждем
+        await wait(pauseTime);
+        
+        // 3. Стираем "поиска..." (оставляем "Сервис ")
+        await deleteText(parts.option1.length);
+        
+        // 4. Печатаем: "подбора..."
+        await typeText(parts.option2);
+        
+        // 5. Убираем курсор через секунду
+        await wait(1000);
+        cursor.remove();
+    }
+
+    // Запуск с задержкой
+    setTimeout(runAnimation, 500);
 }
