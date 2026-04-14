@@ -2238,10 +2238,6 @@ footer {
 }
 
 .scroll-to-top.telegram-fab {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    animation: bounce-vertical 2s ease-in-out infinite; /* Постоянная пульсация */
     width: 65px;
     height: 65px;
     border: 3px solid #0088cc;

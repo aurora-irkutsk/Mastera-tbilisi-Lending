@@ -902,7 +902,16 @@ function initBotClickTracking() {
 // ============================================
 
 function initScrollToTop() {
-    // Кнопка Telegram теперь видна постоянно
+    const scrollButton = document.getElementById('scrollToTop');
+    if (!scrollButton) return;
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('visible');
+        } else {
+            scrollButton.classList.remove('visible');
+        }
+    });
 }
 
 // ============================================
