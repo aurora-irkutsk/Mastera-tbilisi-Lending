@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initButtonHoverEffects();
     initOnlineCounter();
     initLanguageSwitcher();
+    initTypingEffect();
     initModalForms();
     initScrollToTop();
     initBotClickTracking();
@@ -258,7 +259,7 @@ function initFAQ() {
 
 function initLanguageSwitcher() {
     const langButtons = document.querySelectorAll('.lang-btn');
-    const savedLang = localStorage.getItem('language') || 'ka';
+    const savedLang = localStorage.getItem('language') || 'ru';
     
     // Устанавливаем сохраненный язык
     setLanguage(savedLang);
@@ -283,6 +284,15 @@ function setLanguage(lang) {
     
     // Обновляем все элементы с переводами
     document.querySelectorAll('[data-ru], [data-ka], [data-en]').forEach(element => {
+        // Для h1 просто меняем текст и убираем курсор если есть
+        if (element.classList.contains('hero-title')) {
+            const cursor = element.querySelector('.typing-cursor');
+            if (cursor) cursor.remove();
+            const text = element.dataset[lang];
+            if (text) element.textContent = text;
+            return;
+        }
+        
         const text = element.dataset[lang];
         if (text) {
             if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
@@ -912,4 +922,51 @@ function initScrollToTop() {
             behavior: 'smooth'
         });
     });
+}
+
+// ============================================
+// ЭФФЕКТ ПЕЧАТНОЙ МАШИНКИ ДЛЯ H1
+// ============================================
+
+function initTypingEffect() {
+    const titleElement = document.querySelector('.hero-title');
+    if (!titleElement) return;
+
+    // Тексты для разных языков
+    const texts = {
+        ru: titleElement.dataset.ru,
+        ka: titleElement.dataset.ka,
+        en: titleElement.dataset.en
+    };
+
+    const currentLang = document.documentElement.lang || 'ru';
+    const textToType = texts[currentLang] || texts.ru;
+    if (!textToType) return;
+
+    // Очищаем заголовок и добавляем курсор
+    titleElement.textContent = '';
+    const cursor = document.createElement('span');
+    cursor.className = 'typing-cursor';
+    titleElement.appendChild(cursor);
+
+    let charIndex = 0;
+    const typingSpeed = 180; // Скорость печати (мс)
+
+    function typeCharacter() {
+        if (charIndex < textToType.length) {
+            // Вставляем символ перед курсором
+            const textNode = document.createTextNode(textToType[charIndex]);
+            titleElement.insertBefore(textNode, cursor);
+            charIndex++;
+            setTimeout(typeCharacter, typingSpeed);
+        } else {
+            // Убираем курсор после завершения печати
+            setTimeout(() => {
+                cursor.remove();
+            }, 1000);
+        }
+    }
+
+    // Запускаем печать через небольшую задержку
+    setTimeout(typeCharacter, 500);
 }
