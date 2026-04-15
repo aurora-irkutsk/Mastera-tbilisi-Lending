@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypingEffect();
     initModalForms();
     initScrollToTop();
-    initLeadFormTracking();
+    initClientLeadFormTracking();
     initMasterLeadFormTracking();
+    initTelegramButtonTracking();
     initFAQ();
 });
 
@@ -720,7 +721,7 @@ function validateMasterLeadForm(e) {
 }
 
 // Трекинг отправки формы заявки
-function initLeadFormTracking() {
+function initClientLeadFormTracking() {
     const leadForm = document.getElementById('clientLeadForm');
     
     if (leadForm) {
@@ -865,6 +866,33 @@ function initScrollToTop() {
             scrollButton.classList.remove('visible');
         }
     });
+}
+
+// ============================================
+// ТРЕКИНГ КЛИКА ПО КНОПКЕ TELEGRAM
+// ============================================
+function initTelegramButtonTracking() {
+  const telegramButton = document.getElementById('scrollToTop');
+  
+  if (telegramButton) {
+    telegramButton.addEventListener('click', function() {
+      // 🔥 Конверсия для Google Ads
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17979861714/ZQAYCNbLxpwcENLVu_1C',
+          'value': 0.2,
+          'currency': 'USD'
+        });
+        
+        // 📊 Событие для GA4 (опционально)
+        gtag('event', 'contact', {
+          'event_category': 'engagement',
+          'event_label': 'telegram_button_click',
+          'method': 'telegram'
+        });
+      }
+    });
+  }
 }
 
 // ============================================
