@@ -720,7 +720,7 @@ function validateMasterLeadForm(e) {
     return true;
 }
 
-// Трекинг отправки формы заявки
+// Трекинг отправки формы заявки клиента
 function initClientLeadFormTracking() {
     const leadForm = document.getElementById('clientLeadForm');
     
