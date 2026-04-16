@@ -631,7 +631,9 @@ function initMasterLeadFormTracking() {
         gtag('event', 'generate_lead', {
           form_name: 'master_lead_form',
           form_location: 'Как начать получать заказы',
-          user_type: 'master'
+          user_type: 'master',
+          value: 1,
+          currency: 'USD'
         });
       }
 
@@ -758,7 +760,9 @@ function initClientLeadFormTracking() {
         gtag('event', 'generate_lead', {
           form_name: 'client_lead_form',
           form_location: 'Как найти мастера',
-          user_type: 'client'
+          user_type: 'client',
+          value: 1.2,
+          currency: 'USD'
         });
       }
 
