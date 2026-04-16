@@ -881,7 +881,7 @@ function initTelegramButtonTracking() {
       if (typeof gtag === 'function') {
         gtag('event', 'contact', {
           'send_to': 'AW-17979861714/ZQAYCNbLxpwcENLVu_1C',
-          'value': 2,
+          'value': 0.2,
           'currency': 'USD'
         });
         
