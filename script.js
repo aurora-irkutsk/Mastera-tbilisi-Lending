@@ -620,7 +620,7 @@ function initMasterLeadFormTracking() {
                     // Конверсия для Google Ads (Мастер)
                     gtag('event', 'conversion', {
                       'send_to': 'AW-17979861714/YDu4CLemvpwcENLVu_1C',
-                      'value': 0.5,
+                      'value': 1,
                       'currency': 'USD'
                     });
 
@@ -749,7 +749,7 @@ function initClientLeadFormTracking() {
                     if (typeof gtag === 'function') {
                       gtag('event', 'conversion', {
                         'send_to': 'AW-17979861714/I6VRCOzYvpwcENLVu_1C',
-                        'value': 0.5,
+                        'value': 1,
                         'currency': 'USD'
                       });
                   
