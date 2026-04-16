@@ -1,9 +1,49 @@
 // ============================================
-// ОПТИМИЗИРОВАННЫЙ SCRIPT.JS
+// ОПТИМИЗИРОВАННЫЙ SCRIPT.JS — MULTILINGUAL
+// Языки: RU / KA / GE
+// ============================================
+
+// ============================================
+// ГЛОБАЛЬНЫЕ ПЕРЕВОДЫ (все alert и тексты)
+// ============================================
+
+const i18n = {
+    ru: {
+        phoneInvalid:        'Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)',
+        phoneOperator:       'Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99',
+        telegramInvalid:     'Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона',
+        contactRequired:     'Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp',
+        submitError:         'Ошибка при отправке. Попробуйте ещё раз.',
+    },
+    ka: {
+        phoneInvalid:        'გთხოვთ, შეიყვანოთ სწორი ქართული ტელეფონის ნომერი ფორმატში: +995XXXXXXXXX (9 ციფრი +995-ის შემდეგ)',
+        phoneOperator:       'გთხოვთ, შეიყვანოთ სწორი ოპერატორის კოდი. ნომერი უნდა იწყებოდეს +995-ით და შემდეგ 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99',
+        telegramInvalid:     'გთხოვთ, შეიყვანოთ სწორი Telegram მომხმარებლის სახელი (მაგ: @username) ან ტელეფონის ნომერი',
+        contactRequired:     'გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp',
+        submitError:         'გაგზავნისას მოხდა შეცდომა. სცადეთ კიდევ ერთხელ.',
+    },
+    en: {
+        phoneInvalid:        'Please enter a valid Georgian phone number in the format: +995XXXXXXXXX (9 digits after +995)',
+        phoneOperator:       'Please enter a valid operator code. The number must start with +995 followed by 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99',
+        telegramInvalid:     'Please enter a valid Telegram username (e.g. @username) or phone number',
+        contactRequired:     'Please fill in at least one contact field: Telegram or WhatsApp',
+        submitError:         'An error occurred while submitting. Please try again.',
+    }
+};
+
+// Глобальная переменная текущего языка
+let currentLang = 'ru';
+
+// Вспомогательная функция — получить перевод
+function t(key) {
+    return (i18n[currentLang] || i18n.ru)[key] || i18n.ru[key] || key;
+}
+
+// ============================================
+// ИНИЦИАЛИЗАЦИЯ
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Инициализация всех модулей
     initStatsAnimation();
     initScrollAnimation();
     initSmoothScroll();
@@ -27,7 +67,6 @@ function initStatsAnimation() {
     const stats = document.querySelectorAll('.stat-number');
     if (stats.length === 0) return;
 
-    // Настройка наблюдателя
     const observerOptions = {
         threshold: 0.5,
         rootMargin: '0px'
@@ -39,39 +78,25 @@ function initStatsAnimation() {
                 const element = entry.target;
                 const target = parseInt(element.dataset.target, 10);
                 const suffix = element.dataset.suffix || '';
-                
-                // Отмечаем как анимированный
                 element.dataset.animated = 'true';
-                
-                // Запускаем анимацию
                 animateCounter(element, target, 2500, suffix);
-                
-                // Перестаем следить после запуска
                 observer.unobserve(element);
             }
         });
     }, observerOptions);
 
-    // Подготовка и наблюдение за элементами
     stats.forEach(stat => {
-        // Если data-target уже есть, используем его
         if (!stat.dataset.target) {
-            // Иначе извлекаем из текста
             const rawText = stat.textContent.trim();
             const match = rawText.match(/^(\d+)(.*)$/);
-            
             if (match) {
                 stat.dataset.target = match[1];
                 stat.dataset.suffix = match[2];
             } else {
-                return; // Пропускаем элементы без чисел
+                return;
             }
         }
-
-        // Сбрасываем визуальное значение
         stat.textContent = '0' + (stat.dataset.suffix || '');
-        
-        // Начинаем наблюдение
         observer.observe(stat);
     });
 }
@@ -79,7 +104,6 @@ function initStatsAnimation() {
 function animateCounter(element, target, duration, suffix) {
     const startTime = performance.now();
 
-    // Функция плавности (Ease Out Quint)
     function easeOutQuint(t) {
         return 1 - Math.pow(1 - t, 5);
     }
@@ -89,9 +113,7 @@ function animateCounter(element, target, duration, suffix) {
         const progress = Math.min(elapsed / duration, 1);
         const easedProgress = easeOutQuint(progress);
         const current = Math.floor(easedProgress * target);
-
         element.textContent = current + suffix;
-
         if (progress < 1) {
             requestAnimationFrame(animate);
         } else {
@@ -108,9 +130,8 @@ function animateCounter(element, target, duration, suffix) {
 
 function initScrollAnimation() {
     const elementsToAnimate = document.querySelectorAll('.section-card');
-    
+
     if (!window.IntersectionObserver) {
-        // Fallback для старых браузеров
         elementsToAnimate.forEach(el => el.style.opacity = 1);
         return;
     }
@@ -125,7 +146,6 @@ function initScrollAnimation() {
         });
     }, { threshold: 0.1 });
 
-    // Подготовка элементов
     elementsToAnimate.forEach(card => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
@@ -135,24 +155,18 @@ function initScrollAnimation() {
 }
 
 // ============================================
-// 3. ПЛАВНАЯ ПРОКРУТКА ДЛЯ ЯКОРНЫХ ССЫЛОК
+// 3. ПЛАВНАЯ ПРОКРУТКА
 // ============================================
 
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            
             if (href === '#' || href === '#!') return;
-            
             e.preventDefault();
             const target = document.querySelector(href);
-            
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
@@ -164,97 +178,72 @@ function initSmoothScroll() {
 
 function initButtonHoverEffects() {
     document.querySelectorAll('.cta-button').forEach(button => {
-        button.addEventListener('mouseenter', function() {
+        button.addEventListener('mouseenter', function () {
             this.style.transform = 'scale(1.05)';
         });
-        
-        button.addEventListener('mouseleave', function() {
+        button.addEventListener('mouseleave', function () {
             this.style.transform = 'scale(1)';
         });
     });
 }
 
 // ============================================
-// 6. СЧЕТЧИК ОНЛАЙН МАСТЕРОВ (ЖИВАЯ СТАТИСТИКА)
+// 5. СЧЕТЧИК ОНЛАЙН МАСТЕРОВ
 // ============================================
 
 function initOnlineCounter() {
     const counterElement = document.querySelector('.online-count');
     if (!counterElement) return;
 
-    const minCount = 3;   // Минимальное количество мастеров
-    const maxCount = 16;  // Максимальное количество мастеров
-
-    // Генерируем случайное начальное значение при каждой загрузке страницы (от 1 до 8)
+    const minCount = 3;
+    const maxCount = 16;
     const initialCount = Math.floor(Math.random() * 8) + 1;
     counterElement.textContent = initialCount;
     let currentCount = initialCount;
-    
-    // Функция обновления счетчика
+
     function updateCounter() {
-        // Генерируем плавное изменение от текущего значения (от -3 до +3)
-        const minChange = -3;
-        const maxChange = 3;
-        const change = Math.floor(Math.random() * (maxChange - minChange + 1)) + minChange;
-        
-        // Применяем изменение, но остаёмся в пределах от 3 до 28
-        let targetCount = currentCount + change;
-        targetCount = Math.max(minCount, Math.min(maxCount, targetCount));
-        
-        // Добавляем визуальный эффект
+        const change = Math.floor(Math.random() * 7) - 3; // -3..+3
+        let targetCount = Math.max(minCount, Math.min(maxCount, currentCount + change));
         counterElement.classList.add('updating');
-        
-        // Мгновенная смена числа (без анимации набегания)
         setTimeout(() => {
             counterElement.textContent = targetCount;
             counterElement.classList.remove('updating');
             currentCount = targetCount;
         }, 150);
     }
-    
-    // Обновляем каждые 12-20 секунд
+
     function scheduleNextUpdate() {
-        const delay = Math.random() * 8000 + 12000; // 12-20 секунд
+        const delay = Math.random() * 8000 + 12000;
         setTimeout(() => {
             updateCounter();
             scheduleNextUpdate();
         }, delay);
     }
-    
-    // Запускаем через 5 секунд после загрузки
-    setTimeout(() => {
-        scheduleNextUpdate();
-    }, 5000);
+
+    setTimeout(scheduleNextUpdate, 5000);
 }
 
 // ============================================
-// FAQ АККОРДЕОН
+// 6. FAQ АККОРДЕОН
 // ============================================
 
 function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
-
     if (faqItems.length === 0) return;
 
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-
         question.addEventListener('click', () => {
-            // Закрываем все остальные FAQ
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item && otherItem.classList.contains('active')) {
-                    otherItem.classList.remove('active');
-                }
+            faqItems.forEach(other => {
+                if (other !== item) other.classList.remove('active');
             });
-
-            // Переключаем текущий FAQ
             item.classList.toggle('active');
         });
     });
 }
 
 // ============================================
-// ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
+// 7. ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
 // ============================================
 
 function initLanguageSwitcher() {
@@ -262,18 +251,12 @@ function initLanguageSwitcher() {
     const browserLang = navigator.language || navigator.userLanguage;
 
     let defaultLang = 'ru';
-    
-    if (browserLang.startsWith('ka')) {
-        defaultLang = 'ka';
-    } else if (browserLang.startsWith('en')) {
-        defaultLang = 'en';
-    }
-    
+    if (browserLang.startsWith('ka')) defaultLang = 'ka';
+    else if (browserLang.startsWith('en')) defaultLang = 'en';
+
     const savedLang = localStorage.getItem('language') || defaultLang;
-    
-    // Устанавливаем сохраненный язык
     setLanguage(savedLang);
-    
+
     langButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const lang = btn.dataset.lang;
@@ -284,17 +267,19 @@ function initLanguageSwitcher() {
 }
 
 function setLanguage(lang) {
-    // Обновляем активную кнопку
+    // Обновляем глобальную переменную
+    currentLang = lang;
+
+    // Активная кнопка
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
     });
-    
-    // Обновляем HTML lang атрибут
+
+    // HTML lang атрибут
     document.documentElement.lang = lang;
-    
-    // Обновляем все элементы с переводами
+
+    // Переводим все элементы с data-атрибутами
     document.querySelectorAll('[data-ru], [data-ka], [data-en]').forEach(element => {
-        // Для h1 просто меняем текст и убираем курсор если есть
         if (element.classList.contains('hero-title')) {
             const cursor = element.querySelector('.typing-cursor');
             if (cursor) cursor.remove();
@@ -302,7 +287,7 @@ function setLanguage(lang) {
             if (text) element.textContent = text;
             return;
         }
-        
+
         const text = element.dataset[lang];
         if (text) {
             if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
@@ -317,38 +302,34 @@ function setLanguage(lang) {
         }
     });
 
-    // Обновляем placeholders
+    // Placeholders через отдельные атрибуты
     document.querySelectorAll('[data-ru-placeholder], [data-ka-placeholder], [data-en-placeholder]').forEach(element => {
         const placeholder = element.dataset[lang + 'Placeholder'];
-        if (placeholder) {
-            element.placeholder = placeholder;
-        }
+        if (placeholder) element.placeholder = placeholder;
     });
-    
-    // Обновляем title
+
+    // Title страницы
     const titleElement = document.querySelector('title');
     if (titleElement && titleElement.dataset[lang]) {
         titleElement.textContent = titleElement.dataset[lang];
     }
-    
-    // Обновляем суффиксы у счётчиков статистики
+
+    // Суффиксы счётчиков статистики
     document.querySelectorAll('.stat-number[data-suffix-ru], .stat-number[data-suffix-ka], .stat-number[data-suffix-en]').forEach(element => {
         const suffixKey = lang === 'en' ? 'suffixEn' : lang === 'ka' ? 'suffixKa' : 'suffixRu';
         const newSuffix = element.dataset[suffixKey];
         if (newSuffix) {
             element.dataset.suffix = newSuffix;
-            // Обновляем текст, если элемент уже анимирован
             if (element.dataset.animated === 'true') {
                 const target = parseInt(element.dataset.target, 10);
                 element.textContent = target + newSuffix;
             } else {
-                // Если ещё не анимирован, показываем 0 с новым суффиксом
                 element.textContent = '0' + newSuffix;
             }
         }
     });
-    
-    // Обновляем meta description
+
+    // Meta description
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc && metaDesc.dataset[lang]) {
         metaDesc.setAttribute('content', metaDesc.dataset[lang]);
@@ -356,7 +337,7 @@ function setLanguage(lang) {
 }
 
 // ============================================
-// МОДАЛЬНЫЕ ОКНА ФОРМ
+// 8. МОДАЛЬНЫЕ ОКНА
 // ============================================
 
 function initModalForms() {
@@ -379,506 +360,309 @@ function initModalForms() {
         }
     });
 
-    // Автоформатирование телефонных номеров
     initPhoneFormatting();
-
-    // Управление кнопками submit через checkbox
     initConsentCheckboxes();
 
-    // Валидация форм перед отправкой
     const clientForm = document.getElementById('clientForm');
     const masterForm = document.getElementById('masterForm');
-
-    if (clientForm) {
-        clientForm.addEventListener('submit', validateForm);
-    }
-
-    if (masterForm) {
-        masterForm.addEventListener('submit', validateForm);
-    }
+    if (clientForm) clientForm.addEventListener('submit', validateForm);
+    if (masterForm) masterForm.addEventListener('submit', validateForm);
 }
 
-// Управление активностью кнопок submit
+// Управление кнопками submit через checkbox
 function initConsentCheckboxes() {
-    const clientConsent = document.getElementById('clientConsent');
+    const clientConsent   = document.getElementById('clientConsent');
     const clientSubmitBtn = document.getElementById('clientSubmitBtn');
-    const masterConsent = document.getElementById('masterConsent');
+    const masterConsent   = document.getElementById('masterConsent');
     const masterSubmitBtn = document.getElementById('masterSubmitBtn');
-    
-    // Обработчик для формы клиента
+
     if (clientConsent && clientSubmitBtn) {
-        clientConsent.addEventListener('change', function() {
+        clientConsent.addEventListener('change', function () {
             clientSubmitBtn.disabled = !this.checked;
         });
     }
-    
-    // Обработчик для формы мастера
     if (masterConsent && masterSubmitBtn) {
-        masterConsent.addEventListener('change', function() {
+        masterConsent.addEventListener('change', function () {
             masterSubmitBtn.disabled = !this.checked;
         });
     }
 }
 
-// Форматирование телефонных номеров для Грузии
+// Форматирование телефонных номеров
 function initPhoneFormatting() {
     const phoneInputs = document.querySelectorAll('#clientPhone, #masterPhone, #leadPhone, #masterLeadPhone');
-    
+
     phoneInputs.forEach(input => {
         input.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, ''); // Удаляем все кроме цифр
-            
-            // Автоматически добавляем +995
-            if (!value.startsWith('995')) {
-                if (value.length > 0) {
-                    value = '995' + value;
-                }
+            let value = e.target.value.replace(/\D/g, '');
+            if (!value.startsWith('995') && value.length > 0) {
+                value = '995' + value;
             }
-            
-            // Ограничиваем длину: +995 + 9 цифр = 12 символов
-            if (value.length > 12) {
-                value = value.substring(0, 12);
-            }
-            
-            // Форматируем как +995XXXXXXXXX
-            if (value.length > 0) {
-                e.target.value = '+' + value;
-            } else {
-                e.target.value = '';
-            }
+            if (value.length > 12) value = value.substring(0, 12);
+            e.target.value = value.length > 0 ? '+' + value : '';
         });
-        
-        // Устанавливаем +995 при фокусе, если поле пустое
+
         input.addEventListener('focus', (e) => {
-            if (e.target.value === '') {
-                e.target.value = '+995';
-            }
+            if (e.target.value === '') e.target.value = '+995';
         });
-        
-        // Очищаем если осталось только +995
+
         input.addEventListener('blur', (e) => {
-            if (e.target.value === '+995') {
-                e.target.value = '';
-            }
+            if (e.target.value === '+995') e.target.value = '';
         });
     });
 }
 
-// Валидация формы перед отправкой
-function validateForm(e) {
-    const form = e.target;
-    const phoneInput = form.querySelector('input[type="tel"]');
-    const telegramInput = form.querySelector('input[name="telegram"]');
-    
-    // Проверка телефона
-    if (phoneInput) {
-        const phoneValue = phoneInput.value;
-        const phonePattern = /^\+995[0-9]{9}$/;
-        
-        if (!phonePattern.test(phoneValue)) {
-            e.preventDefault();
-            alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
-            phoneInput.focus();
-            return false;
-        }
-        
-        // Проверка, что номер начинается с допустимого кода оператора
-        const operatorCode = phoneValue.substring(4, 6);
-        const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
-        
-        if (!validCodes.includes(operatorCode)) {
-            e.preventDefault();
-            alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
-            phoneInput.focus();
-            return false;
-        }
-    }
-    
-    // Проверка Telegram
-    if (telegramInput) {
-        const telegramValue = telegramInput.value.trim();
-        const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
-        
-        if (!telegramPattern.test(telegramValue)) {
-            e.preventDefault();
-            alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
-            telegramInput.focus();
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-function openClientForm() {
-    const modal = document.getElementById('clientFormModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
-
-function closeClientForm() {
-    const modal = document.getElementById('clientFormModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-function openMasterForm() {
-    const modal = document.getElementById('masterFormModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
-
-function closeMasterForm() {
-    const modal = document.getElementById('masterFormModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
 // ============================================
-// МОДАЛЬНОЕ ОКНО ДЛЯ ЗАЯВКИ КЛИЕНТА (LEAD FORM)
+// 9. ВАЛИДАЦИЯ — ОБЩИЕ ФУНКЦИИ
 // ============================================
 
-function openClientLeadForm() {
-    const modal = document.getElementById('clientLeadFormModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
+const VALID_OPERATOR_CODES = ['55','56','57','58','59','51','52','53','54','68','70','71','72','74','75','77','79','90','91','92','93','94','95','96','97','98','99'];
+const PHONE_PATTERN    = /^\+995[0-9]{9}$/;
+const TELEGRAM_PATTERN = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
 
-function closeClientLeadForm() {
-    const modal = document.getElementById('clientLeadFormModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
+function validatePhone(phoneInput) {
+    if (!phoneInput) return true;
+    const val = phoneInput.value;
 
-function openThankYou() {
-    const modal = document.getElementById('thankYouModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
-
-function closeThankYou() {
-    const modal = document.getElementById('thankYouModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-function openMasterThankYou() {
-    const modal = document.getElementById('masterThankYouModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
-
-function closeMasterThankYou() {
-    const modal = document.getElementById('masterThankYouModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// ============================================
-// МОДАЛЬНОЕ ОКНО ДЛЯ ЗАЯВКИ МАСТЕРА (MASTER LEAD FORM)
-// ============================================
-
-function openMasterLeadForm() {
-    const modal = document.getElementById('masterLeadFormModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
-}
-
-function closeMasterLeadForm() {
-    const modal = document.getElementById('masterLeadFormModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Трекинг отправки формы заявки мастера
-function initMasterLeadFormTracking() {
-  const masterLeadForm = document.getElementById('masterLeadForm');
-  if (!masterLeadForm) return;
-
-  let isSubmitting = false;
-
-  masterLeadForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    if (isSubmitting) return;
-    if (!validateMasterLeadForm(e)) return;
-
-    isSubmitting = true;
-
-    const formData = new FormData(masterLeadForm);
-    const transactionId = 'master_' + Date.now();
-
-    try {
-      const response = await fetch('https://formspree.io/f/mykdoebj', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Submit failed');
-      }
-
-      // 📊 GA4 аналитика (НЕ Google Ads conversion)
-      if (typeof gtag === 'function') {
-        gtag('event', 'generate_lead', {
-          form_name: 'master_lead_form',
-          form_location: 'Как начать получать заказы',
-          user_type: 'master',
-          value: 0,
-          currency: 'USD'
-        });
-
-        gtag('event', 'master_lead_submit', {
-          method: 'form'
-        });
-      }
-
-      // UI после успеха
-      closeMasterLeadForm();
-      openMasterThankYou();
-      masterLeadForm.reset();
-
-    } catch (error) {
-      console.error('Master form error:', error);
-      alert('Ошибка при отправке. Попробуйте ещё раз.');
-      isSubmitting = false;
-    }
-  });
-
-  // 📌 checkbox логика
-  const masterLeadConsent = document.getElementById('masterLeadConsent');
-  const masterLeadSubmitBtn = document.getElementById('masterLeadSubmitBtn');
-
-  if (masterLeadConsent && masterLeadSubmitBtn) {
-    masterLeadSubmitBtn.disabled = !masterLeadConsent.checked;
-
-    masterLeadConsent.addEventListener('change', function () {
-      masterLeadSubmitBtn.disabled = !this.checked;
-    });
-  }
-}
-
-function validateMasterLeadForm(e) {
-    const form = e.target;
-    const phoneInput = document.getElementById('masterLeadPhone');
-    const telegramInput = form.querySelector('input[name="telegram"]');
-    const whatsappInput = form.querySelector('input[name="whatsapp"]');
-
-    // Проверка: хотя бы один из контактов должен быть заполнен
-    const telegramValue = telegramInput ? telegramInput.value.trim() : '';
-    const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
-
-    if (!telegramValue && !whatsappValue) {
-        const lang = document.documentElement.lang || 'ru';
-
-        if (currentLang === 'ka') {
-            alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
-        } 
-        else if (currentLang === 'en') {
-            alert('Please fill in at least one contact field: Telegram or WhatsApp');
-        } 
-        else {
-            alert('Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp');
-        }
-
-        if (telegramInput && !telegramValue) {
-            telegramInput.focus();
-        } else {
-            whatsappInput.focus();
-        }
-
+    if (!PHONE_PATTERN.test(val)) {
+        alert(t('phoneInvalid'));
+        phoneInput.focus();
         return false;
     }
 
-    // Проверка телефона
-    if (phoneInput) {
-        const phoneValue = phoneInput.value;
-        const phonePattern = /^\+995[0-9]{9}$/;
-
-        if (!phonePattern.test(phoneValue)) {
-            alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
-            phoneInput.focus();
-            return false;
-        }
-
-        // Проверка кода оператора
-        const operatorCode = phoneValue.substring(4, 6);
-        const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
-
-        if (!validCodes.includes(operatorCode)) {
-            alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
-            phoneInput.focus();
-            return false;
-        }
-    }
-
-    // Проверка формата Telegram, если заполнен
-    if (telegramValue) {
-        const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
-        if (!telegramPattern.test(telegramValue)) {
-            alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
-            telegramInput.focus();
-            return false;
-        }
+    const code = val.substring(4, 6);
+    if (!VALID_OPERATOR_CODES.includes(code)) {
+        alert(t('phoneOperator'));
+        phoneInput.focus();
+        return false;
     }
 
     return true;
 }
 
-// Трекинг отправки формы заявки клиента
-function initClientLeadFormTracking() {
-  const leadForm = document.getElementById('clientLeadForm');
-  if (!leadForm) return;
+function validateTelegram(telegramInput) {
+    if (!telegramInput) return true;
+    const val = telegramInput.value.trim();
+    if (!val) return true; // необязательное поле — проверяем только если заполнено
 
-  let isSubmitting = false;
-
-  leadForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    if (isSubmitting) return;
-    if (!validateLeadForm(e)) return;
-
-    isSubmitting = true;
-
-    const formData = new FormData(leadForm);
-    const transactionId = 'client_' + Date.now();
-
-    try {
-      const response = await fetch('https://formspree.io/f/xpqjbpyk', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Submit failed');
-
-      if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {
-          send_to: 'AW-17979861714/I6VRCOzYvpwcENLVu_1C',
-          value: 1.2,
-          currency: 'USD',
-          transaction_id: transactionId
-        });
-
-        gtag('event', 'generate_lead', {
-          form_name: 'client_lead_form',
-          form_location: 'Как найти мастера',
-          user_type: 'client',
-          value: 1.2,
-          currency: 'USD'
-        });
-      }
-
-      closeClientLeadForm();
-      openThankYou();
-      leadForm.reset();
-
-    } catch (error) {
-      console.error(error);
-      alert('Ошибка при отправке. Попробуйте ещё раз.');
-      isSubmitting = false;
+    if (!TELEGRAM_PATTERN.test(val)) {
+        alert(t('telegramInvalid'));
+        telegramInput.focus();
+        return false;
     }
-  });
+    return true;
+}
 
-  // checkbox
-  const leadConsent = document.getElementById('leadConsent');
-  const leadSubmitBtn = document.getElementById('leadSubmitBtn');
+// Валидация стандартных форм (clientForm / masterForm)
+function validateForm(e) {
+    const form = e.target;
+    const phoneInput    = form.querySelector('input[type="tel"]');
+    const telegramInput = form.querySelector('input[name="telegram"]');
 
-  if (leadConsent && leadSubmitBtn) {
-    leadSubmitBtn.disabled = !leadConsent.checked;
+    if (!validatePhone(phoneInput)) { e.preventDefault(); return false; }
+    if (!validateTelegram(telegramInput)) { e.preventDefault(); return false; }
 
-    leadConsent.addEventListener('change', function() {
-      leadSubmitBtn.disabled = !this.checked;
+    return true;
+}
+
+// ============================================
+// 10. ЛИД-ФОРМА КЛИЕНТА
+// ============================================
+
+function initClientLeadFormTracking() {
+    const leadForm = document.getElementById('clientLeadForm');
+    if (!leadForm) return;
+
+    let isSubmitting = false;
+
+    leadForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (isSubmitting) return;
+        if (!validateLeadForm(e)) return;
+
+        isSubmitting = true;
+
+        const formData = new FormData(leadForm);
+        const transactionId = 'client_' + Date.now();
+
+        try {
+            const response = await fetch('https://formspree.io/f/xpqjbpyk', {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Submit failed');
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'conversion', {
+                    send_to: 'AW-17979861714/I6VRCOzYvpwcENLVu_1C',
+                    value: 1.2,
+                    currency: 'USD',
+                    transaction_id: transactionId
+                });
+                gtag('event', 'generate_lead', {
+                    form_name: 'client_lead_form',
+                    form_location: 'Как найти мастера',
+                    user_type: 'client',
+                    value: 1.2,
+                    currency: 'USD'
+                });
+            }
+
+            closeClientLeadForm();
+            openThankYou();
+            leadForm.reset();
+
+        } catch (error) {
+            console.error(error);
+            alert(t('submitError'));
+            isSubmitting = false;
+        }
     });
-  }
+
+    // Checkbox
+    const leadConsent   = document.getElementById('leadConsent');
+    const leadSubmitBtn = document.getElementById('leadSubmitBtn');
+    if (leadConsent && leadSubmitBtn) {
+        leadSubmitBtn.disabled = !leadConsent.checked;
+        leadConsent.addEventListener('change', function () {
+            leadSubmitBtn.disabled = !this.checked;
+        });
+    }
 }
 
 function validateLeadForm(e) {
-    const form = e.target;
-    const phoneInput = document.getElementById('leadPhone');
+    const form          = e.target;
+    const phoneInput    = document.getElementById('leadPhone');
     const telegramInput = form.querySelector('input[name="telegram"]');
     const whatsappInput = form.querySelector('input[name="whatsapp"]');
 
-    // Проверка: хотя бы один из контактов должен быть заполнен
     const telegramValue = telegramInput ? telegramInput.value.trim() : '';
     const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
 
     if (!telegramValue && !whatsappValue) {
-        const lang = document.documentElement.lang || 'ru';
-
-        if (currentLang === 'ka') {
-            alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
-        } 
-        else if (currentLang === 'en') {
-            alert('Please fill in at least one contact field: Telegram or WhatsApp');
-        } 
-        else {
-            alert('Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp');
-        }
-
-        if (telegramInput && !telegramValue) {
-            telegramInput.focus();
-        } else {
-            whatsappInput.focus();
-        }
-
+        alert(t('contactRequired'));
+        if (telegramInput && !telegramValue) telegramInput.focus();
+        else if (whatsappInput) whatsappInput.focus();
         return false;
     }
 
-    // Проверка телефона
-    if (phoneInput) {
-        const phoneValue = phoneInput.value;
-        const phonePattern = /^\+995[0-9]{9}$/;
-
-        if (!phonePattern.test(phoneValue)) {
-            alert('Пожалуйста, введите корректный грузинский номер телефона в формате: +995XXXXXXXXX (9 цифр после +995)');
-            phoneInput.focus();
-            return false;
-        }
-
-        // Проверка кода оператора
-        const operatorCode = phoneValue.substring(4, 6);
-        const validCodes = ['55', '56', '57', '58', '59', '51', '52', '53', '54', '68', '70', '71', '72', '74', '75', '77', '79', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99'];
-
-        if (!validCodes.includes(operatorCode)) {
-            alert('Пожалуйста, введите корректный код оператора. Номер должен начинаться с +995 и далее 55, 56, 57, 58, 59, 51-54, 68, 70-79, 90-99');
-            phoneInput.focus();
-            return false;
-        }
-    }
-
-    // Проверка формата Telegram, если заполнен
-    if (telegramValue) {
-        const telegramPattern = /^(@[a-zA-Z0-9_]{5,32}|[0-9]{9,15})$/;
-        if (!telegramPattern.test(telegramValue)) {
-            alert('Пожалуйста, введите корректный Telegram username (например: @username) или номер телефона');
-            telegramInput.focus();
-            return false;
-        }
-    }
+    if (!validatePhone(phoneInput)) return false;
+    if (telegramValue && !validateTelegram(telegramInput)) return false;
 
     return true;
 }
 
 // ============================================
-// ПЛАВАЮЩАЯ КНОПКА TELEGRAM
+// 11. ЛИД-ФОРМА МАСТЕРА
+// ============================================
+
+function initMasterLeadFormTracking() {
+    const masterLeadForm = document.getElementById('masterLeadForm');
+    if (!masterLeadForm) return;
+
+    let isSubmitting = false;
+
+    masterLeadForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (isSubmitting) return;
+        if (!validateMasterLeadForm(e)) return;
+
+        isSubmitting = true;
+
+        const formData = new FormData(masterLeadForm);
+
+        try {
+            const response = await fetch('https://formspree.io/f/mykdoebj', {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Submit failed');
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    form_name: 'master_lead_form',
+                    form_location: 'Как начать получать заказы',
+                    user_type: 'master',
+                    value: 0,
+                    currency: 'USD'
+                });
+                gtag('event', 'master_lead_submit', { method: 'form' });
+            }
+
+            closeMasterLeadForm();
+            openMasterThankYou();
+            masterLeadForm.reset();
+
+        } catch (error) {
+            console.error('Master form error:', error);
+            alert(t('submitError'));
+            isSubmitting = false;
+        }
+    });
+
+    // Checkbox
+    const masterLeadConsent   = document.getElementById('masterLeadConsent');
+    const masterLeadSubmitBtn = document.getElementById('masterLeadSubmitBtn');
+    if (masterLeadConsent && masterLeadSubmitBtn) {
+        masterLeadSubmitBtn.disabled = !masterLeadConsent.checked;
+        masterLeadConsent.addEventListener('change', function () {
+            masterLeadSubmitBtn.disabled = !this.checked;
+        });
+    }
+}
+
+function validateMasterLeadForm(e) {
+    const form          = e.target;
+    const phoneInput    = document.getElementById('masterLeadPhone');
+    const telegramInput = form.querySelector('input[name="telegram"]');
+    const whatsappInput = form.querySelector('input[name="whatsapp"]');
+
+    const telegramValue = telegramInput ? telegramInput.value.trim() : '';
+    const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
+
+    if (!telegramValue && !whatsappValue) {
+        alert(t('contactRequired'));
+        if (telegramInput && !telegramValue) telegramInput.focus();
+        else if (whatsappInput) whatsappInput.focus();
+        return false;
+    }
+
+    if (!validatePhone(phoneInput)) return false;
+    if (telegramValue && !validateTelegram(telegramInput)) return false;
+
+    return true;
+}
+
+// ============================================
+// 12. УПРАВЛЕНИЕ МОДАЛЬНЫМИ ОКНАМИ
+// ============================================
+
+function openClientForm()      { _modal('clientFormModal',       'flex'); }
+function closeClientForm()     { _modal('clientFormModal',       'none'); }
+function openMasterForm()      { _modal('masterFormModal',        'flex'); }
+function closeMasterForm()     { _modal('masterFormModal',        'none'); }
+function openClientLeadForm()  { _modal('clientLeadFormModal',   'flex'); }
+function closeClientLeadForm() { _modal('clientLeadFormModal',   'none'); }
+function openThankYou()        { _modal('thankYouModal',          'flex'); }
+function closeThankYou()       { _modal('thankYouModal',          'none'); }
+function openMasterThankYou()  { _modal('masterThankYouModal',   'flex'); }
+function closeMasterThankYou() { _modal('masterThankYouModal',   'none'); }
+function openMasterLeadForm()  { _modal('masterLeadFormModal',   'flex'); }
+function closeMasterLeadForm() { _modal('masterLeadFormModal',   'none'); }
+
+function _modal(id, display) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = display;
+}
+
+// ============================================
+// 13. КНОПКА «НАВЕРХ» / TELEGRAM FAB
 // ============================================
 
 function initScrollToTop() {
@@ -886,141 +670,102 @@ function initScrollToTop() {
     if (!scrollButton) return;
 
     window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            scrollButton.classList.add('visible');
+        scrollButton.classList.toggle('visible', window.pageYOffset > 300);
+    });
+}
+
+// ============================================
+// 14. ТРЕКИНГ КНОПКИ TELEGRAM
+// ============================================
+
+function initTelegramButtonTracking() {
+    const telegramButton = document.getElementById('scrollToTop');
+    if (!telegramButton) return;
+
+    let isButtonClicked = false;
+
+    telegramButton.addEventListener('click', function (e) {
+        if (isButtonClicked) return;
+        isButtonClicked = true;
+        e.preventDefault();
+
+        const goToTelegram = () => { window.location.href = telegramButton.href; };
+
+        if (typeof gtag === 'function') {
+            gtag('event', 'telegram_click', {
+                method: 'telegram',
+                event_category: 'engagement'
+            });
+            setTimeout(goToTelegram, 600);
         } else {
-            scrollButton.classList.remove('visible');
+            goToTelegram();
         }
     });
 }
 
 // ============================================
-// ТРЕКИНГ КЛИКА ПО КНОПКЕ TELEGRAM
-// ============================================
-
-function initTelegramButtonTracking() {
-  const telegramButton = document.getElementById('scrollToTop');
-  let isButtonClicked = false;
-
-  if (!telegramButton) return;
-
-  const handler = function (e) {
-    if (isButtonClicked) return;
-    isButtonClicked = true;
-
-    e.preventDefault();
-
-    const redirected = false;
-
-    const goToTelegram = () => {
-      if (!redirected) {
-        window.location.href = telegramButton.href;
-      }
-    };
-
-    if (typeof gtag === 'function') {
-
-      // 📊 GA4 событие (ТОЛЬКО аналитика, НЕ конверсия Ads)
-      gtag('event', 'telegram_click', {
-        method: 'telegram',
-        event_category: 'engagement'
-      });
-
-      // fallback на случай если gtag не успеет отправить
-      setTimeout(goToTelegram, 600);
-
-    } else {
-      goToTelegram();
-    }
-  };
-
-  telegramButton.addEventListener('click', handler);
-}
-
-// ============================================
-// ЭФФЕКТ ПЕЧАТНОЙ МАШИНКИ ДЛЯ H1
+// 15. ЭФФЕКТ ПЕЧАТНОЙ МАШИНКИ ДЛЯ H1
 // ============================================
 
 function initTypingEffect() {
     const titleElement = document.querySelector('.hero-title');
     if (!titleElement) return;
 
-    // Части текста для разных языков
     const textParts = {
         ru: {
-            start: "Сервис ",
-            option1: "поиска мастеров Тбилиси",
-            option2: "подбора мастеров Тбилиси"
+            start:   'Сервис ',
+            option1: 'поиска мастеров Тбилиси',
+            option2: 'подбора мастеров Тбилиси'
         },
         en: {
-            start: "Master ",
-            option1: "search service Tbilisi",
-            option2: "matching service Tbilisi"
+            start:   'Master ',
+            option1: 'search service Tbilisi',
+            option2: 'matching service Tbilisi'
         },
         ka: {
-            start: "სერვისი ",
-            option1: "ძიების თბილისში",
-            option2: "შერჩევის თბილისში"
+            start:   'სერვისი ',
+            option1: 'ძიების თბილისში',
+            option2: 'შერჩევის თბილისში'
         }
     };
 
-    const currentLang = document.documentElement.lang || 'ru';
     const parts = textParts[currentLang] || textParts.ru;
-    
-    // Скорости (мс)
-    const typeSpeed = 180;
-    const deleteSpeed = 50;
-    const pauseTime = 1000;
 
-    // Создаем курсор
+    const typeSpeed  = 180;
+    const deleteSpeed = 50;
+    const pauseTime  = 1000;
+
     const cursor = document.createElement('span');
     cursor.className = 'typing-cursor';
-    titleElement.innerHTML = ''; // Очищаем перед стартом
+    titleElement.innerHTML = '';
     titleElement.appendChild(cursor);
 
-    // Функция паузы
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    // Функция печати
     async function typeText(text) {
         for (let i = 0; i < text.length; i++) {
-            // Вставляем перед курсором
-            const char = document.createTextNode(text[i]);
-            titleElement.insertBefore(char, cursor);
+            titleElement.insertBefore(document.createTextNode(text[i]), cursor);
             await wait(typeSpeed);
         }
     }
 
-    // Функция стирания
     async function deleteText(count) {
         for (let i = 0; i < count; i++) {
-            // Удаляем символ перед курсором
-            if (titleElement.childNodes.length > 1) { // >1 потому что последний узел - курсор
+            if (titleElement.childNodes.length > 1) {
                 titleElement.removeChild(titleElement.childNodes[titleElement.childNodes.length - 2]);
             }
             await wait(deleteSpeed);
         }
     }
 
-    // Основной сценарий
     async function runAnimation() {
-        // 1. Печатаем: "Сервис поиска..."
         await typeText(parts.start + parts.option1);
-        
-        // 2. Ждем
         await wait(pauseTime);
-        
-        // 3. Стираем "поиска..." (оставляем "Сервис ")
         await deleteText(parts.option1.length);
-        
-        // 4. Печатаем: "подбора..."
         await typeText(parts.option2);
-        
-        // 5. Убираем курсор через секунду
         await wait(1000);
         cursor.remove();
     }
 
-    // Запуск с задержкой
     setTimeout(runAnimation, 500);
 }
