@@ -618,21 +618,22 @@ function initMasterLeadFormTracking() {
             }).then(response => {
                 if (response.ok) {
                     // Конверсия для Google Ads (Мастер)
-                    gtag('event', 'conversion', {
-                      'send_to': 'AW-17979861714/YDu4CLemvpwcENLVu_1C',
-                      'value': 1,
-                      'currency': 'USD'
-                    });
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'conversion', {
+                          'send_to': 'AW-17979861714/YDu4CLemvpwcENLVu_1C',
+                          'value': 5,
+                          'currency': 'USD'
+                        });
 
-                    // 📊 Событие для GA4 (опционально, чтобы видеть в аналитике)
-                    gtag('event', 'generate_lead', {
-                      'event_category': 'forms',
-                      'event_label': 'master_lead_form',
-                      'form_location': 'Как начать получать заказы',
-                      'value': 1,
-                      'currency': 'USD'
-                    });
-
+                        // 📊 Событие для GA4 (опционально, чтобы видеть в аналитике)
+                        gtag('event', 'generate_lead', {
+                          'event_category': 'forms',
+                          'event_label': 'master_lead_form',
+                          'form_location': 'Как начать получать заказы',
+                          'value': 5,
+                          'currency': 'USD'
+                        });
+                    }
                     // Закрываем форму и показываем благодарность
                     closeMasterLeadForm();
                     openMasterThankYou();
@@ -749,7 +750,7 @@ function initClientLeadFormTracking() {
                     if (typeof gtag === 'function') {
                       gtag('event', 'conversion', {
                         'send_to': 'AW-17979861714/I6VRCOzYvpwcENLVu_1C',
-                        'value': 1,
+                        'value': 10,
                         'currency': 'USD'
                       });
                   
@@ -758,7 +759,7 @@ function initClientLeadFormTracking() {
                         'event_category': 'forms',
                         'event_label': 'client_lead_form',
                         'form_location': 'Как найти мастера',
-                        'value': 1,
+                        'value': 10,
                         'currency': 'USD'
                       });
                     }
@@ -878,9 +879,9 @@ function initTelegramButtonTracking() {
     telegramButton.addEventListener('click', function() {
       // Конверсия для Google Ads Telegram Bot
       if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {
+        gtag('event', 'contact', {
           'send_to': 'AW-17979861714/ZQAYCNbLxpwcENLVu_1C',
-          'value': 0.5,
+          'value': 2,
           'currency': 'USD'
         });
         
@@ -888,7 +889,9 @@ function initTelegramButtonTracking() {
         gtag('event', 'contact', {
           'event_category': 'engagement',
           'event_label': 'telegram_button_click',
-          'method': 'telegram'
+          'method': 'telegram',
+          'value': 2,
+          'currency': 'USD'
         });
       }
     });
