@@ -811,17 +811,24 @@ function validateLeadForm(e) {
     const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
 
     if (!telegramValue && !whatsappValue) {
-        const currentLang = document.documentElement.lang;
+        const lang = document.documentElement.lang || 'ru';
+
         if (currentLang === 'ka') {
             alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
-        } else {
+        } 
+        else if (currentLang === 'en') {
+            alert('Please fill in at least one contact field: Telegram or WhatsApp');
+        } 
+        else {
             alert('Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp');
         }
+
         if (telegramInput && !telegramValue) {
             telegramInput.focus();
         } else {
             whatsappInput.focus();
         }
+
         return false;
     }
 
