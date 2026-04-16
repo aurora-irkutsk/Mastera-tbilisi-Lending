@@ -870,6 +870,7 @@ function initScrollToTop() {
 // ============================================
 // ТРЕКИНГ КЛИКА ПО КНОПКЕ TELEGRAM
 // ============================================
+
 function initTelegramButtonTracking() {
   const telegramButton = document.getElementById('scrollToTop');
   let isButtonClicked = false;
