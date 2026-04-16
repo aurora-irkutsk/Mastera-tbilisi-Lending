@@ -599,7 +599,7 @@ function initMasterLeadFormTracking() {
 
   let isSubmitting = false;
 
-  masterLeadForm.addEventListener('submit', async function(e) {
+  masterLeadForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     if (isSubmitting) return;
@@ -614,48 +614,51 @@ function initMasterLeadFormTracking() {
       const response = await fetch('https://formspree.io/f/mykdoebj', {
         method: 'POST',
         body: formData,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Accept': 'application/json'
+        }
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Submit failed');
+      if (!response.ok) {
+        throw new Error(data.error || 'Submit failed');
+      }
 
+      // 📊 GA4 аналитика (НЕ Google Ads conversion)
       if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {
-          send_to: 'AW-17979861714/YDu4CLemvpwcENLVu_1C',
-          value: 1,
-          currency: 'USD',
-          transaction_id: transactionId
-        });
-
         gtag('event', 'generate_lead', {
           form_name: 'master_lead_form',
           form_location: 'Как начать получать заказы',
           user_type: 'master',
-          value: 1,
+          value: 0,
           currency: 'USD'
+        });
+
+        gtag('event', 'master_lead_submit', {
+          method: 'form'
         });
       }
 
+      // UI после успеха
       closeMasterLeadForm();
       openMasterThankYou();
       masterLeadForm.reset();
 
     } catch (error) {
-      console.error(error);
+      console.error('Master form error:', error);
       alert('Ошибка при отправке. Попробуйте ещё раз.');
       isSubmitting = false;
     }
   });
 
-  // checkbox логика
+  // 📌 checkbox логика
   const masterLeadConsent = document.getElementById('masterLeadConsent');
   const masterLeadSubmitBtn = document.getElementById('masterLeadSubmitBtn');
 
   if (masterLeadConsent && masterLeadSubmitBtn) {
     masterLeadSubmitBtn.disabled = !masterLeadConsent.checked;
 
-    masterLeadConsent.addEventListener('change', function() {
+    masterLeadConsent.addEventListener('change', function () {
       masterLeadSubmitBtn.disabled = !this.checked;
     });
   }
@@ -672,17 +675,24 @@ function validateMasterLeadForm(e) {
     const whatsappValue = whatsappInput ? whatsappInput.value.trim() : '';
 
     if (!telegramValue && !whatsappValue) {
-        const currentLang = document.documentElement.lang;
+        const lang = document.documentElement.lang || 'ru';
+
         if (currentLang === 'ka') {
             alert('გთხოვთ, შეავსოთ ერთ-ერთი საკონტაქტო ველი: Telegram ან WhatsApp');
-        } else {
+        } 
+        else if (currentLang === 'en') {
+            alert('Please fill in at least one contact field: Telegram or WhatsApp');
+        } 
+        else {
             alert('Пожалуйста, заполните хотя бы один из контактов: Telegram или WhatsApp');
         }
+
         if (telegramInput && !telegramValue) {
             telegramInput.focus();
         } else {
             whatsappInput.focus();
         }
+
         return false;
     }
 
