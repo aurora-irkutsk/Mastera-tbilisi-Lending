@@ -876,7 +876,7 @@ function initTelegramButtonTracking() {
   
   if (telegramButton) {
     telegramButton.addEventListener('click', function() {
-      // 🔥 Конверсия для Google Ads
+      // Конверсия для Google Ads Telegram Bot
       if (typeof gtag === 'function') {
         gtag('event', 'conversion', {
           'send_to': 'AW-17979861714/ZQAYCNbLxpwcENLVu_1C',
